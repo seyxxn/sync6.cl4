@@ -1,0 +1,23 @@
+// 객체 생성 {key : value, key : value ... }
+var fruit = {
+  name: "banana",
+  color: "yellow",
+  origin: "Puerto Rico",
+  weight: 230,
+  size: 17,
+};
+
+var aFruit = []; // 배열 객체 생성
+
+// for 반복문으로 fruit 객체의 속성을 돌면서 출력
+for (var p in fruit) {
+  console.log(p + ": " + fruit[p]); // 출력
+  aFruit.push(fruit[p]); // Array 객체의 메소드 push
+}
+
+console.log(aFruit); // 배열에 입력된 데이터 console 창에서 출력
+
+alert(aFruit[1]); // 상단 메세지에 배열 index에 해당하는 value 출력
+
+// 멀티 주석 : shift + alt + A
+// 싱글 주석 : ctrl : /

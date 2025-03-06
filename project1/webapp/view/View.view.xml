@@ -1,0 +1,12 @@
+<mvc:View 
+    controllerName="sync.d07.project1.controller.View"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Label id = "label" text="입력하세요." required="true"></Label>
+            <Input id="input" width="60%" value="{/input}"></Input>
+            <Button id = "button" press=".onPress" text="메세지 출력"></Button>
+        </content>
+    </Page>
+</mvc:View>

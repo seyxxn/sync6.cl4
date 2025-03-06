@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>면적 구하는 함수 선언 및 호출</title>
+  </head>
+  <body>
+    <h2>면적 계산기</h2>
+    <p>가로와 세로를 입력하세요.</p>
+    <!-- 입력 필드 -->
+    <!-- label(가로, 세로), input(가로, 세로), button -->
+    <label for="wid">가로 : </label>
+    <input id="wid" placeholder="가로를 입력하세요." />
+    <br />
+    <label for="len">세로 : </label>
+    <input id="len" placeholder="세로를 입력하세요." />
+    <br /><br />
+
+    <!-- <button > : 계산하는 함수 호출 -->
+    <button type="button" onclick="calculate()">면적계산</button>
+
+    <!-- 결과 출력 -->
+    <h3>
+      계산된 면적:
+      <span id="result">없음</span>
+    </h3>
+
+    <script src="calc_area.js"></script>
+  </body>
+</html>

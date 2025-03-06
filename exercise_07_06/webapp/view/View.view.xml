@@ -1,0 +1,40 @@
+<mvc:View 
+    controllerName="sync.d07.exercise0706.controller.View"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <Page id="page" title="{i18n>title}">
+        <List
+            id="list"
+            class="sapUiResponsiveMargin"
+            width="auto"
+            items="{student>/student}"
+        >
+            <items>
+                <ObjectListItem
+                    id="object"
+                    title="{student>name}"
+                    core:require="{
+                        Formatter: 'sync/d07/exercise0706/model/formatter'
+                    }"
+                    number="{
+                        path: 'student>birthdate',
+                        formatter : 'Formatter.formatDate'
+                    }"
+                    icon = "{= ${student>gender} === '남' ? 'sap-icon://male' : 'sap-icon://female'}">
+                    <markers>
+                        <ObjectMarker 
+                            id="marker"
+                            type="{
+                                path: 'student>birthdate',
+                                formatter: 'Formatter.isFutureMonth'
+                            }">
+                        </ObjectMarker>
+                    </markers>
+                </ObjectListItem>
+            </items>
+        </List>
+    </Page>
+</mvc:View>
+
