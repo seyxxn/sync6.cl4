@@ -1,0 +1,46 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog
+        id="updateDialog"
+        title ="Selected Data">
+    <f:SimpleForm 
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+			ariaLabelledBy="Title1" >
+		<f:content>
+            <Label text="Carrier Name" labelFor="carrname_dialog" design="Bold" />
+            <Input id="carrname_dialog" value="{updateModel>/Carrname}" placeholder="Enter Carrier Name"/>
+
+            <Label text="URL" labelFor="url_dialog" design="Bold" />
+            <Input id="url_dialog" value="{updateModel>/Url}" placeholder="Enter URL http://"/>
+
+		</f:content>
+	</f:SimpleForm>
+
+    <beginButton>
+        <Button
+            text="Close"
+            press=".onCloseDialog"/>
+    </beginButton>
+    <endButton>
+            <Button
+            text="Update"
+            press=".onUpdate"/>
+    </endButton>
+    </Dialog>
+</core:FragmentDefinition>

@@ -1,0 +1,83 @@
+<mvc:View controllerName="sync.d07.mtrd0700.controller.View"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <mvc:content>
+        <Page id="page" title="{i18n>title}">
+        <Label text="나의 정보 입력하기" required="true" />
+        <Input 
+            id="name" 
+            required="true" 
+            width="30%" 
+            placeholder="이름" 
+            type="Text"
+            valueLiveUpdate="true"
+            value="{view>/name}"/>
+        <Input 
+            id="number" 
+            width="30%" 
+            placeholder="번호" 
+            type="Number"
+            value="{view>/number}"
+            valueLiveUpdate="true"
+            description=" {view>/name} {view>/number}"/>
+        
+        <Button 
+            text="확인"
+            icon="sap-icon://accept"
+            press=".onPress">
+        </Button>
+
+        <Button
+            text="Dialog 열기"
+            press=".onOpenDialog">
+        </Button>
+
+
+            <List
+                id="list"
+                class="sapUiResponsiveMargin"
+                width="auto"
+                items="{fruits>/Fruits}"
+            >
+                <items>
+                    <ObjectListItem 
+                        title="{fruits>ProductName} X {fruits>Quantity}"
+                        number="{
+                            parts : [
+                                'fruits>Price',
+                                'fruits>PriceUnit'
+                            ],
+                            type : 'sap.ui.model.type.Currency',
+                            formatOptions : {
+                                showMeasure : true
+                            }
+                        }"
+                        icon="{= ${fruits>Quantity} === 0 ? 'sap-icon://alert' : 'sap-icon://verified'}"
+                        numberState="{= ${fruits>Quantity} > 0 ? 'Success' : 'Warning'}"
+                        core:require="{
+                            Formatter: 'sync/d07/mtrd0700/model/formatter'
+                        }"
+                    >
+                    <markers>
+                        <ObjectMarker 
+                            type="{ 
+                                path: 'fruits>Price',
+                                formatter: 'Formatter.isExpensive'
+                            }">
+                        </ObjectMarker>
+                    </markers>
+                    <firstStatus>
+                        <ObjectStatus
+                            text="{
+                                path : 'fruits>Status',
+                                formatter : 'Formatter.formatStatus.bind($controller)'
+                            }"/>
+                    </firstStatus>
+                    </ObjectListItem>
+                </items>
+            </List>
+        </Page>
+    </mvc:content>
+</mvc:View>

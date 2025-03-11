@@ -1,0 +1,101 @@
+{
+    "_version": "1.65.0",
+    "sap.app": {
+        "id": "sync.d07.mtrd0700",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
+        },
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:basic",
+            "version": "1.16.5",
+            "toolsId": "c15748ad-932d-4936-9d0d-94e998ede736"
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": false,
+        "dependencies": {
+            "minUI5Version": "1.133.0",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "sync.d07.mtrd0700.i18n.i18n"
+                }
+            },
+            "fruits": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "Fruits.json"
+            }
+        },
+        "resources": {
+            "css": [
+                {
+                    "uri": "css/style.css"
+                }
+            ]
+        },
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "controlAggregation": "pages",
+                "controlId": "app",
+                "transition": "slide",
+                "type": "View",
+                "viewType": "XML",
+                "path": "sync.d07.mtrd0700.view",
+                "async": true,
+                "viewPath": "sync.d07.mtrd0700.view"
+            },
+            "routes": [
+                {
+                    "name": "RouteView",
+                    "pattern": ":?query:",
+                    "target": [
+                        "TargetView"
+                    ]
+                }
+            ],
+            "targets": {
+                "TargetView": {
+                    "id": "View",
+                    "name": "View"
+                }
+            }
+        },
+        "rootView": {
+            "viewName": "sync.d07.mtrd0700.view.App",
+            "type": "XML",
+            "id": "App"
+        }
+    }
+}

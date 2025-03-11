@@ -265,6 +265,211 @@
         "env": {
             "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false"
         }
+    },
+    {
+        "name": "Start exercise_d07_07",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_d07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--open",
+            "test/flpSandbox.html#exercised0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "DEBUG": "--inspect",
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start exercise_d07_07 Local",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_d07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-local.yaml",
+            "--open",
+            "test/flpSandbox.html#exercised0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start exercise_d07_07 Mock",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_d07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-mock.yaml",
+            "--open",
+            "test/flpSandbox.html#exercised0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start exercise_07_07",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--open",
+            "test/flpSandbox.html#exercise0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "DEBUG": "--inspect",
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start exercise_07_07 Local",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-local.yaml",
+            "--open",
+            "test/flpSandbox.html#exercise0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start exercise_07_07 Mock",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/exercise_07_07",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-mock.yaml",
+            "--open",
+            "test/flpSandbox.html#exercise0707-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=100&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start mtr_d07_00",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/mtr_d07_00",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--open",
+            "test/flpSandbox.html#syncd07mtrd0700-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "DEBUG": "--inspect",
+            "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start mtr_d07_00 Local",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/mtr_d07_00",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-local.yaml",
+            "--open",
+            "test/flpSandbox.html#syncd07mtrd0700-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-ui-xx-viewCache=false"
+        }
     }
   ]
 }

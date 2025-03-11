@@ -1,0 +1,84 @@
+{
+    "Fruits": [
+      {
+        "ProductName": "Apple",
+        "Quantity": 10,
+        "QuantityUnit": "kg",
+        "Price": 3000,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Banana",
+        "Quantity": 15,
+        "QuantityUnit": "bunch",
+        "Price": 2500,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Orange",
+        "Quantity": 0,
+        "QuantityUnit": "kg",
+        "Price": 3500,
+        "PriceUnit": "KRW",
+        "Status": "2"
+      },
+      {
+        "ProductName": "Grapes",
+        "Quantity": 5,
+        "QuantityUnit": "kg",
+        "Price": 8000,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Strawberry",
+        "Quantity": 2,
+        "QuantityUnit": "box",
+        "Price": 12000,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Watermelon",
+        "Quantity": 3,
+        "QuantityUnit": "piece",
+        "Price": 15000,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Mango",
+        "Quantity": 0,
+        "QuantityUnit": "kg",
+        "Price": 10000,
+        "PriceUnit": "KRW",
+        "Status": "2"
+      },
+      {
+        "ProductName": "Pineapple",
+        "Quantity": 7,
+        "QuantityUnit": "piece",
+        "Price": 7000,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Peach",
+        "Quantity": 12,
+        "QuantityUnit": "kg",
+        "Price": 5500,
+        "PriceUnit": "KRW",
+        "Status": "1"
+      },
+      {
+        "ProductName": "Cherry",
+        "Quantity": 0,
+        "QuantityUnit": "kg",
+        "Price": 13000,
+        "PriceUnit": "KRW",
+        "Status": "2"
+      }
+    ]
+  }
