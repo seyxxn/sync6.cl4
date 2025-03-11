@@ -1,106 +1,166 @@
-<mvc:View controllerName="exercise0707.controller.View"
+<mvc:View
+    controllerName="exercise0707.controller.View"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:l="sap.ui.layout"
-    xmlns:f="sap.ui.layout.form">
-    <Page id="page" title="{i18n>title}">
-
-    <VBox class="sapUiSmallMargin">
-		<f:SimpleForm id="SimpleFormToolbar"
-			editable="true"
-			layout="ResponsiveGridLayout"
-			labelSpanXL="4"
-			labelSpanL="3"
-			labelSpanM="4"
-			labelSpanS="12"
-			adjustLabelSpan="false"
-			emptySpanXL="0"
-			emptySpanL="4"
-			emptySpanM="0"
-			emptySpanS="0"
-			columnsXL="2"
-			columnsL="1"
-			columnsM="1"
-			singleContainerFullSize="false"
-			ariaLabelledBy="Title1" >
-			<f:toolbar>
-				<Toolbar id="TB1">
-					<Title id="Title1" text="Carrier"/>
-					<ToolbarSpacer />
-				</Toolbar>
-			</f:toolbar>
-			<f:content>
-			<Toolbar ariaLabelledBy="Title2">
-					<Title id="Title2" text="Airline Information"/>
-					<ToolbarSpacer />
-                    <Button
-                            text="Create Entry" type="Emphasized"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+    >
+        <VBox class="sapUiSmallMargin">
+            <f:SimpleForm
+                id="SimpleFormToolbar"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="3"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="4"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="1"
+                columnsM="1"
+                singleContainerFullSize="false"
+                ariaLabelledBy="Title1"
+            >
+                <f:toolbar>
+                    <Toolbar id="TB1">
+                        <Title
+                            id="Title1"
+                            text="Carrier"
+                        />
+                        <ToolbarSpacer />
+                    </Toolbar>
+                </f:toolbar>
+                <f:content>
+                    <Toolbar ariaLabelledBy="Title2">
+                        <Title
+                            id="Title2"
+                            text="Airline Information"
+                        />
+                        <ToolbarSpacer />
+                        <Button
+                            text="Create Entry"
+                            type="Emphasized"
                             icon="sap-icon://create"
-                            press="onCreate"/>
-			</Toolbar>
+                            press="onCreate"
+                        />
+                    </Toolbar>
 
-            <Label text="Carrier ID" labelFor="carrid" design="Bold"/>
-            <Input id="carrid" required="true" placeholder="Enter Carrier ID"/>
+                    <Label
+                        text="Carrier ID"
+                        labelFor="carrid"
+                        design="Bold"
+                    />
+                    <Input
+                        id="carrid"
+                        required="true"
+                        placeholder="Enter Carrier ID"
+                    />
 
-            <Label text="Carrier Name" labelFor="carrname" design="Bold" />
-            <Input id="carrname" placeholder="Enter Carrier Name"/>
+                    <Label
+                        text="Carrier Name"
+                        labelFor="carrname"
+                        design="Bold"
+                    />
+                    <Input
+                        id="carrname"
+                        placeholder="Enter Carrier Name"
+                    />
 
-            <Label text="Currency Code" labelFor="currcode" design="Bold" />
-            <Input id="currcode" placeholder="Enter Currency Code"/>
+                    <Label
+                        text="Currency Code"
+                        labelFor="currcode"
+                        design="Bold"
+                    />
+                    <Input
+                        id="currcode"
+                        placeholder="Enter Currency Code"
+                    />
 
-            <Label text="URL" labelFor="url" design="Bold" />
-            <Input id="url" placeholder="Enter URL http://"/>
-			</f:content>
-		</f:SimpleForm>
-	</VBox>
-        <Table id="mTable" items="{myModel>/ZCARR_D07Set}" mode="SingleSelectLeft">
-
+                    <Label
+                        text="URL"
+                        labelFor="url"
+                        design="Bold"
+                    />
+                    <Input
+                        id="url"
+                        placeholder="Enter URL http://"
+                    />
+                </f:content>
+            </f:SimpleForm>
+        </VBox>
+        <Table
+            id="mTable"
+            items="{ 
+                path : 'myModel>/ZCARR_D07Set',
+                sorter : [
+                        {
+                            path : 'myModel>Carrid',
+                            descending : false
+                        }
+                ]
+            }"
+            mode="SingleSelectLeft"
+        >
             <headerToolbar>
-                <Toolbar >
-                    <Title text="Airline List"></Title>
+                <Toolbar>
+                    <Title text="Airline List" />
                     <ToolbarSpacer />
                     <Button
-                            text="Update Entry"
-                            type="Default"
-                            icon="sap-icon://edit"
-                            press=".onDialogUpdatePress"/>
+                        text="Update Entry"
+                        type="Default"
+                        icon="sap-icon://edit"
+                        press=".onDialogUpdatePress"
+                    />
                     <Button
-                            text="Delete Entry"
-                            type="Reject"
-                            icon="sap-icon://delete"
-                            press=".onConfirmationDeletePress"/>
+                        text="Delete Entry"
+                        type="Reject"
+                        icon="sap-icon://delete"
+                        press=".onConfirmationDeletePress"
+                    />
                 </Toolbar>
             </headerToolbar>
 
             <columns>
                 <Column>
                     <header>
-                        <Label text="Carrier ID"></Label>
+                        <Label text="Carrier ID" />
                     </header>
                 </Column>
                 <Column>
                     <header>
-                        <Label text="Carrier Name"></Label>
+                        <Label text="Carrier Name" />
                     </header>
                 </Column>
                 <Column>
                     <header>
-                        <Label text="Currency Code"></Label>
+                        <Label text="Currency Code" />
                     </header>
                 </Column>
                 <Column>
                     <header>
-                        <Label text="Website"></Label>
+                        <Label text="Website" />
                     </header>
                 </Column>
             </columns>
             <items>
-                <ColumnListItem>
+                <ColumnListItem >
                     <cells>
-                        <Text text="{myModel>Carrid}"></Text>
-                        <Text text="{myModel>Carrname}"></Text>
-                        <Text text="{myModel>Currcode}"></Text>
-                        <Link text="{myModel>Url}" href="{myModel>Url}" target="_blank"/>
+                        <Text text="{myModel>Carrid}" />
+                        <Text text="{myModel>Carrname}" />
+                        <Text text="{myModel>Currcode}" />
+                        <Link
+                            text="{myModel>Url}"
+                            href="{myModel>Url}"
+                            target="_blank"
+                        />
                     </cells>
                 </ColumnListItem>
             </items>

@@ -44,6 +44,9 @@ sap.ui.define([
         onCreate() {
             var oModel = this.getView().getModel("myModel");
             var sCarrid = this.getView().byId("carrid").getValue(); // 키 값
+            var that = this;
+            // 콜백 내부에서 컨트롤러의 this가 변경될 수 있기 때문에 that 변수 현재 컨트롤러 객체를 저장(exercise0707.controller.View)
+
             var oEntry = {
                 Carrid: sCarrid,
                 Carrname: this.getView().byId("carrname").getValue(),
@@ -68,7 +71,13 @@ sap.ui.define([
                     oModel.create("/ZCARR_D07Set", oEntry, {
                         success: function() {
                             MessageToast.show("항공사 데이터가 성공적으로 생성되었습니다.", { width: "auto" });
-                            oModel.refresh(true); ;
+                            oModel.refresh(true);
+
+                            // 여기서 만약 that이 아닌 this를 사용한다면 oModel을 가르키게됨
+                            that.getView().byId("carrid").setValue("");
+                            that.getView().byId("carrname").setValue("");
+                            that.getView().byId("currcode").setValue("");
+                            that.getView().byId("url").setValue("");
                         },
                         error: function() {
                             MessageToast.show("데이터 생성 오류", { width: "auto" });
@@ -166,9 +175,6 @@ sap.ui.define([
             );
         },
         async onDialogUpdatePress() { 
-            // OData 모델 가져오기
-            var oModel = this.getView().getModel("myModel");
-
             // 데이터 모델이 적용된 테이블 객체 가져오기
             var oTable = this.getView().byId("mTable");
         
@@ -184,22 +190,56 @@ sap.ui.define([
             // 선택된 항목의 아이템 객체 가져오기
             var oData = sSelect.getBindingContext("myModel").getObject();
 
-            // 기존의 `updateModel`이 존재하면 업데이트, 없으면 새로 생성하여 View에 설정
-            if (!this.getView().getModel("updateModel")) {
-                var oUpdateModel = new sap.ui.model.json.JSONModel(oData);
-                this.getView().setModel(oUpdateModel, "updateModel");
-            } else {
-                this.getView().getModel("updateModel").setData(oData);
-            }
+            // 선택된 항목의 데이터를 이용하여 JSON 모델 생성
+            var oUpdateModel = new sap.ui.model.json.JSONModel(oData); // oData를 이용하여 JSON 모델 생성
+            // this.getView().setModel(oUpdateModel, "updateModel"); // 모델을 뷰에 설정
             
             this.oDialog ??= await this.loadFragment({
                 name: "exercise0707.view.UpdateDialog",
             });
 
+            // 수정 - 다이얼로그에 모델을 설정함
+            this.oDialog.setModel(oUpdateModel, "updateModel");
             this.oDialog.open();
         },
+
         onCloseDialog() {
             this.byId("updateDialog").close();
-        },          
+        },        
+        
+        onUpdate(){
+            // OData 모델 가져오기
+            var oModel = this.getView().getModel("myModel");
+
+             // 데이터 모델이 적용된 테이블 객체 가져오기
+            var oTable = this.getView().byId("mTable");
+
+             // 선택된 아이템 가져오기
+            var sSelect = oTable.getSelectedItem();
+
+            // 선택된 항목의 아이템 객체 가져오기
+            // var oData = sSelect.getBindingContext("myModel").getObject();
+
+            // 선택된 항목의 경로 찾기
+            var sPath = sSelect.getBindingContext("myModel").getPath();
+
+            // oData.Carrname = this.getView().byId("carrname_dialog").getValue();
+            // oData.Url = this.getView().byId("url_dialog").getValue();
+
+            var oUpdateModel = this.oDialog.getModel("updateModel");
+            var oUpdatedData = oUpdateModel.getData();
+            
+
+            oModel.update(sPath, oUpdatedData, {
+                success: () => {
+                    MessageToast.show("데이터가 성공적으로 수정되었습니다.", { width: "auto" });
+                    oModel.refresh(true); // 삭제된 데이터 반영
+                },
+                error: () => {
+                    MessageToast.show("데이터 수정에 실패했습니다.", { width: "auto" });
+                }
+            });
+            this.byId("updateDialog").close(); // 다이얼로그 닫기
+        }
     });
 });
