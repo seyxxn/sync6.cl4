@@ -1,0 +1,116 @@
+<mvc:View controllerName="sync.d07.mtrd07test.controller.View"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{i18n>title}">
+
+<VBox class="sapUiSmallMargin">
+		<f:SimpleForm id="SimpleFormToolbar"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			labelSpanXL="4"
+			labelSpanL="3"
+			labelSpanM="4"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="0"
+			emptySpanL="4"
+			emptySpanM="0"
+			emptySpanS="0"
+			columnsXL="2"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false"
+			ariaLabelledBy="Title1" >
+			<f:toolbar>
+				<Toolbar id="TB1">
+					<Title id="Title1" text="Company"/>
+					<ToolbarSpacer />
+				</Toolbar>
+			</f:toolbar>
+			<f:content>
+			<Toolbar ariaLabelledBy="Title2">
+					<Title id="Title2" text="Company Information"/>
+					<ToolbarSpacer />
+                    <Button
+                            text="Create Entry" type="Emphasized"
+                            icon="sap-icon://create"
+                            press="onCreate"/>
+			</Toolbar>
+
+            <Label text="Companay Code" labelFor="bukrs" design="Bold"/>
+            <Input id="bukrs" required="true" placeholder="Enter Company Code"/>
+
+            <Label text="Company Name" labelFor="butxt" design="Bold" />
+            <Input id="butxt" placeholder="Enter Company Name"/>
+
+            <Label text="City" labelFor="ort01" design="Bold" />
+            <Input id="ort01" placeholder="Enter City"/>
+
+            <Label text="Country/Reg." labelFor="land1" design="Bold" />
+            <Input id="land1" placeholder="Enter Country/Reg."/>
+
+            <Label text="Currency" labelFor="waers" design="Bold" />
+            <Input id="waers" placeholder="Enter Currency"/>
+
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+
+      <Table id="mTable" items="{/ZT001_D07Set}" mode="MultiSelect">
+            <headerToolbar>
+                <Toolbar >
+                    <Title text="Company List"></Title>
+                    <ToolbarSpacer />
+                    <Button 
+                        text="Delete Entry"
+                        type="Reject"
+                        icon="sap-icon://delete"
+                        press="onDelete"
+                    />
+                </Toolbar>
+            </headerToolbar>
+
+            <columns>
+                <Column>
+                    <header>
+                        <Label text="Company Code"></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Company Name"></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="City"></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Country/Reg."></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Currency"></Label>
+                    </header>
+                </Column>
+            </columns>
+            
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{Bukrs}"></Text>
+                        <Text text="{Butxt}"></Text>
+                        <Text text="{Ort01}"></Text>
+                        <Text text="{Land1}"></Text>
+                        <Text text="{Waers}"></Text>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Page>
+</mvc:View>
