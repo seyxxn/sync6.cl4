@@ -58,16 +58,25 @@
 		</f:SimpleForm>
 	</VBox>
 
-      <Table id="mTable" items="{/ZT001_D07Set}" mode="MultiSelect">
+    <Table 
+            id="mTable"
+            items="{myModel>/ZT001_D07Set}"
+            mode="SingleSelectLeft">
             <headerToolbar>
                 <Toolbar >
                     <Title text="Company List"></Title>
                     <ToolbarSpacer />
-                    <Button 
+                    <Button
+                        text="Update Entry"
+                        type="Default"
+                        icon="sap-icon://edit"
+                        press=".onDialogUpdatePress"
+                    />
+                    <Button
                         text="Delete Entry"
                         type="Reject"
                         icon="sap-icon://delete"
-                        press="onDelete"
+                        press=".onConfirmationDeletePress"
                     />
                 </Toolbar>
             </headerToolbar>
@@ -103,11 +112,11 @@
             <items>
                 <ColumnListItem>
                     <cells>
-                        <Text text="{Bukrs}"></Text>
-                        <Text text="{Butxt}"></Text>
-                        <Text text="{Ort01}"></Text>
-                        <Text text="{Land1}"></Text>
-                        <Text text="{Waers}"></Text>
+                        <Text text="{myModel>Bukrs}"></Text>
+                        <Text text="{myModel>Butxt}"></Text>
+                        <Text text="{myModel>Ort01}"></Text>
+                        <Text text="{myModel>Land1}"></Text>
+                        <Text text="{myModel>Waers}"></Text>
                     </cells>
                 </ColumnListItem>
             </items>

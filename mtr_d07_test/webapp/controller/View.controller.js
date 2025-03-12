@@ -3,8 +3,9 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/odata/v2/ODataModel",
     "sap/m/MessageToast",
+    "sap/m/MessageBox"
   ],
-  (Controller, ODataModel, MessageToast) => {
+  (Controller, ODataModel, MessageToast, MessageBox) => {
     "use strict";
 
     return Controller.extend("sync.d07.mtrd07test.controller.View", {
@@ -19,6 +20,9 @@ sap.ui.define(
         // OData 모델 가져오기
         var oModel = this.getView().getModel("myModel");
 
+        var bukrs = this.getView().byId("bukrs").getValue(); // 키 값가져오기
+        var that = this; // 콜백 내부에서 컨트롤러의 this가 변경될 수 있기 때문에 that 변수 현재 컨트롤러 객체를 저장 (sync.d07.mtrd07test.controller.View)
+
         // 새로운 레코드 생성
         var oEntry = {
           Bukrs: this.getView().byId("bukrs").getValue(),
@@ -28,6 +32,7 @@ sap.ui.define(
           Waers: this.getView().byId("waers").getValue(),
         };
 
+        // 필수 입력 값 검증하기
         if (
           oEntry.Bukrs === "" ||
           oEntry.Butxt === "" ||
@@ -38,16 +43,25 @@ sap.ui.define(
           MessageToast.show("데이터를 모두 입력해주세요.");
           return;
         }
-
-        // 새로운 레코드 추가
-        oModel.create("/ZT001_D07Set", oEntry, {
-          success: () => {
-            MessageToast.show("데이터가 성공적으로 생성되었습니다.");
-            oModel.refresh(true); // 입력된 데이터가 다시 조회되도록 refresh 함수 호출
-            // *refresh 안됨 ..
+        
+        // 기존 키 존재 여부 확인
+        oModel.read("/ZT001_D07Set('" + bukrs + "')", {
+          success: function (oData) {
+            // console.log(oData.Bukrs);
+            MessageBox.error(oData.Bukrs + ": 이미 존재하는 키 값입니다.");
           },
-          error: () => {
-            MessageToast.show("데이터생성 오류");
+          error: function () {
+            // 새로운 레코드 추가
+            oModel.create("/ZT001_D07Set", oEntry, {
+              success: () => {
+                MessageToast.show("데이터가 성공적으로 생성되었습니다.");
+                oModel.refresh(true);
+                // 입력된 데이터가 다시 조회되도록 refresh 함수 호출
+              },
+              error: () => {
+                MessageToast.show("데이터생성 오류");
+              },
+            });
           },
         });
       },
@@ -59,35 +73,169 @@ sap.ui.define(
         // 데이터 모델이 적용된 테이블 객체 가져오기
         var oTable = this.getView().byId("mTable");
 
-        // 선택된 아이템 가져오기 (여러개)
-        var aSelectedItems = oTable.getSelectedItems();
+        // 선택된 아이템 가져오기
+        var sSelect = oTable.getSelectedItem();
 
-        if (aSelectedItems.length === 0) {
-          MessageToast.show("삭제할 항목을 선택해주세요", { width: "auto" });
+        // 선택된 아이템이 없는 경우
+        if (sSelect === null) {
+          MessageToast.show("삭제할 항목을 선택해주세요.", {width : "auto"});
           return;
         }
 
-        aSelectedItems.forEach((oItem, index) => {
-          var sPath = oItem.getBindingContext().getPath();
-          console.log("삭제할 데이터 경로:", sPath);
+         // 선택된 항목의 경로 찾기
+        var sPath = sSelect.getBindingContext("myModel").getPath();
 
-          oModel.remove(sPath, {
+        oModel.remove(sPath,{
+          success: () => {
+              MessageToast.show("데이터가 성공적으로 삭제되었습니다.", {width : "auto"});
+              oTable.removeSelections(); // 선택된 항목 삭제
+              oModel.refresh(true);  // 삭제된 데이터가 반영될 수 있도록 refresh 함수 호출
+          },
+          error: () => {
+              MessageToast.show("데이터 삭제에 실패했습니다.", {width : "auto"});
+          }
+      }); 
+      },
+      // 삭제 창 눌렀을 때 호출될 함수 정의
+      onConfirmationDeletePress() {
+        // OData 모델 가져오기
+        var oModel = this.getView().getModel("myModel");
+                
+        // 데이터 모델이 적용된 테이블 객체 가져오기
+        var oTable = this.getView().byId("mTable");
+
+        // 선택된 아이템 가져오기
+        var sSelect = oTable.getSelectedItem();
+
+      // 선택된 아이템이 없는 경우
+      if (sSelect === null) {
+        MessageToast.show("삭제할 항목을 선택해주세요.", { width: "auto" });
+        return;
+      }
+
+      // 선택된 항목의 경로 찾기
+      var sPath = sSelect.getBindingContext("myModel").getPath();
+      // 선택된 항목의 아이템 객체 가져오기
+      var oData = sSelect.getBindingContext("myModel").getObject();
+              
+      // MessageBox에서 YES를 눌렀을 때만 삭제 수행
+      MessageBox.confirm(
+        "Company Code : " + oData.Bukrs +
+        "\nCompany Name : " + oData.Butxt +
+        "\nCity : " + oData.Ort01 +
+        "\nCountry/Reg. : " + oData.Land1 +
+        "\nCurrency : " + oData.Waers +
+        "\n\n정말 삭제하시겠습니까?",
+        {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YSE,
+            onClose: (sAction) => { 
+                if (sAction === MessageBox.Action.YES) {
+                    // 사용자가 YES를 누른 경우만 삭제
+                    oModel.remove(sPath, {
+                        success: () => {
+                            MessageToast.show("데이터가 성공적으로 삭제되었습니다.", { width: "auto" });
+                            oTable.removeSelections(); // 선택된 항목 삭제
+                            oModel.refresh(true); // 삭제된 데이터 반영
+                        },
+                        error: () => {
+                            MessageToast.show("데이터 삭제에 실패했습니다.", { width: "auto" });
+                        }
+                    });
+                }else if (sAction === MessageBox.Action.NO) {
+                    MessageToast.show("삭제가 취소되었습니다.", { width: "auto" });
+                    oTable.removeSelections(); // 선택된 항목 삭제
+                }
+            }
+        }
+      );      
+      },
+      async onDialogUpdatePress() {
+        // 데이터 모델이 적용된 테이블 객체 가져오기
+        var oTable = this.getView().byId("mTable");
+                
+        // 선택된 아이템 가져오기
+        var sSelect = oTable.getSelectedItem();
+
+        // 선택된 아이템이 없는 경우
+        if (sSelect === null) {
+            MessageToast.show("변경할 항목을 선택해주세요.", { width: "auto" });
+            return;
+        }
+        
+        // 선택된 항목의 아이템 객체 가져오기
+        var oData = sSelect.getBindingContext("myModel").getObject();
+
+        // 선택된 항목의 데이터를 이용하여 JSON 모델 생성
+        var oUpdateModel = new sap.ui.model.json.JSONModel(oData); // oData를 이용하여 JSON 모델 생성
+
+        this.oDialog ??= await this.loadFragment({
+            name: "sync.d07.mtrd07test.view.UpdateDialog", // 경로 주의 **
+        });
+
+        // 다이얼로그에 모델을 설정함
+        this.oDialog.setModel(oUpdateModel, "updateModel");
+        this.oDialog.open();
+      },
+
+      onCloseDialog() {
+        this.byId("updateDialog").close();
+      },   
+      
+      onUpdate(){
+        // OData 모델 가져오기
+        var oModel = this.getView().getModel("myModel");
+
+         // 데이터 모델이 적용된 테이블 객체 가져오기
+        var oTable = this.getView().byId("mTable");
+
+         // 선택된 아이템 가져오기
+        var sSelect = oTable.getSelectedItem();
+
+        // 선택된 항목의 경로 찾기
+        var sPath = sSelect.getBindingContext("myModel").getPath();
+
+        // 기존 데이터 가져오기
+        var oData = sSelect.getBindingContext("myModel").getObject();
+
+        var oUpdateModel = this.oDialog.getModel("updateModel");
+        var oUpdatedData = oUpdateModel.getData();
+
+        console.log(oUpdatedData);
+
+        // 만약 빈 값으로 둔다면 메세지 출력
+        if (oUpdatedData.Bukrs === '' ||
+            oUpdatedData.Butxt === '' ||
+            oUpdatedData.Ort01 === '' ||
+            oUpdatedData.Land1 === '' ||
+            oUpdatedData.Waers === '' )
+        {
+            MessageToast.show("데이터를 모두 입력해주세요.", { width: "auto" });
+            return;
+        }
+
+        // 기존의 값과 모두 동일하다면 메세지 출력
+        if (oUpdatedData.Bukrs === oData.Bukrs &&
+            oUpdatedData.Butxt === oData.Butxt &&
+            oUpdatedData.Ort01 === oData.Ort01 &&
+            oUpdatedData.Land1 === oData.Land1 &&
+            oUpdatedData.Waers === oData.Waers)
+        {
+            MessageToast.show("변경된 데이터가 없습니다.", { width: "auto" });
+            return;
+        }   
+
+        oModel.update(sPath, oUpdatedData, {
             success: () => {
-              console.log("삭제 성공:", sPath);
-
-              // 마지막 삭제 요청이 완료된 경우 테이블 갱신
-              if (index === aSelectedItems.length - 1) {
-                MessageToast.show("선택한 항목이 성공적으로 삭제되었습니다.");
-                oTable.removeSelections(true); // 선택 해제
-                oModel.refresh(true); // 모델 새로고침
-              }
+                MessageToast.show("데이터가 성공적으로 수정되었습니다.", { width: "auto" });
+                oModel.refresh(true); // 삭제된 데이터 반영
             },
             error: () => {
-              MessageToast.show("삭제에 실패했습니다.");
-            },
-          });
+                MessageToast.show("데이터 수정에 실패했습니다.", { width: "auto" });
+            }
         });
-      },
+        this.byId("updateDialog").close(); // 다이얼로그 닫기
+    }
     });
   }
 );
