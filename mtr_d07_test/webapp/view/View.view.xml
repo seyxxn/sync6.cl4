@@ -2,7 +2,8 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m"
     xmlns:l="sap.ui.layout"
-    xmlns:f="sap.ui.layout.form">
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
     <Page id="page" title="{i18n>title}">
 
 <VBox class="sapUiSmallMargin">
@@ -48,6 +49,16 @@
             <Label text="City" labelFor="ort01" design="Bold" />
             <Input id="ort01" placeholder="Enter City"/>
 
+            <!-- <InputListItem label="City" id="ort01">
+                <Select>
+                    <core:Item key="GR" text="Greece" />
+                    <core:Item key="MX" text="Mexico" />
+                    <core:Item key="NO" text="Norway" />
+                    <core:Item key="NZ" text="New Zealand" />
+                    <core:Item key="NL" text="Netherlands" />
+                </Select>
+            </InputListItem> -->
+
             <Label text="Country/Reg." labelFor="land1" design="Bold" />
             <Input id="land1" placeholder="Enter Country/Reg."/>
 
@@ -61,7 +72,8 @@
     <Table 
             id="mTable"
             items="{myModel>/ZT001_D07Set}"
-            mode="SingleSelectLeft">
+            mode="SingleSelectLeft"
+            alternateRowColors="true">
             <headerToolbar>
                 <Toolbar >
                     <Title text="Company List"></Title>

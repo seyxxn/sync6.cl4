@@ -74,6 +74,7 @@ sap.ui.define([
                             oModel.refresh(true);
 
                             // 여기서 만약 that이 아닌 this를 사용한다면 oModel을 가르키게됨
+                            // 새로운 값 입력 후, 인풋 필드를 비워줌
                             that.getView().byId("carrid").setValue("");
                             that.getView().byId("carrname").setValue("");
                             that.getView().byId("currcode").setValue("");

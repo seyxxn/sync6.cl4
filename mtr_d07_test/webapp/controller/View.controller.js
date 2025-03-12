@@ -49,6 +49,9 @@ sap.ui.define(
           success: function (oData) {
             // console.log(oData.Bukrs);
             MessageBox.error(oData.Bukrs + ": 이미 존재하는 키 값입니다.");
+
+            // 인풋 필드를 비워줌
+            that.getView().byId("bukrs").setValue("");
           },
           error: function () {
             // 새로운 레코드 추가
@@ -57,6 +60,13 @@ sap.ui.define(
                 MessageToast.show("데이터가 성공적으로 생성되었습니다.");
                 oModel.refresh(true);
                 // 입력된 데이터가 다시 조회되도록 refresh 함수 호출
+
+                // 새로운 값 입력 후, 인풋 필드를 비워줌
+                that.getView().byId("bukrs").setValue("");
+                that.getView().byId("butxt").setValue("");
+                that.getView().byId("ort01").setValue("");
+                that.getView().byId("land1").setValue("");
+                that.getView().byId("waers").setValue("");
               },
               error: () => {
                 MessageToast.show("데이터생성 오류");
