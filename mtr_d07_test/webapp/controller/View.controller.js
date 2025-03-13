@@ -272,15 +272,58 @@ sap.ui.define(
         });
         this.byId("updateDialog").close(); // 다이얼로그 닫기
       },
-
       onSearch(oEvent) {
         const sQuery = oEvent.getParameter("query");
         console.log("검색어 입력:", sQuery);
 
         const oModel = this.getView().getModel("myModel"); // OData 모델 가져오기
+
+        if (!oModel) {
+          console.error("OData 모델을 찾을 수 없습니다.");
+          return;
+        }
+
+        // ✅ 검색어가 없을 경우 초기 데이터 복원
+        if (!sQuery) {
+          console.log("검색어가 없으므로 데이터를 초기화합니다.");
+
+          // OData에서 원래 데이터를 다시 가져오기
+          oModel.read("/ZT001_D07Set", {
+            success: function (oData) {
+              console.log("초기 OData 데이터 로드 완료:", oData.results);
+
+              // ✅ 초기 데이터를 JSON 모델로 변환하여 사용
+              const oJsonModel = new sap.ui.model.json.JSONModel({
+                TableData: oData.results,
+              });
+
+              // ✅ 테이블에 원래 JSONModel을 다시 적용
+              this.getView().setModel(oJsonModel, "jsonModel");
+
+              // ✅ 테이블 바인딩 갱신 (초기 데이터로 복원)
+              const oTable = this.byId("mTable");
+              oTable.setModel(oJsonModel, "myModel");
+              oTable.bindAggregation(
+                "items",
+                "myModel>/TableData",
+                oTable.getBindingInfo("items").template
+              );
+
+              console.log("테이블이 초기 데이터로 복원되었습니다.");
+            }.bind(this),
+            error: function (oError) {
+              console.error("초기 데이터 로딩 실패:", oError);
+              MessageToast.show("초기 데이터를 불러오는 데 실패했습니다.");
+            },
+          });
+
+          return;
+        }
+
+        // ✅ 검색어가 있으면 필터링 실행
         oModel.read("/ZT001_D07Set", {
           success: function (oData) {
-            // console.log("OData에서 가져온 데이터:", oData.results);
+            console.log("OData에서 가져온 데이터:", oData.results);
 
             // ✅ OData 데이터를 JSON 모델로 변환
             const oJsonModel = new sap.ui.model.json.JSONModel({
@@ -299,6 +342,7 @@ sap.ui.define(
           },
         });
       },
+
       applyFilter(sQuery, oJsonModel) {
         if (!sQuery) {
           console.warn("검색어가 비어 있으므로 필터링을 수행하지 않습니다.");
