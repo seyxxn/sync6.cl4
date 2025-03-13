@@ -39,8 +39,30 @@
                 id="list"
                 class="sapUiResponsiveMargin"
                 width="auto"
-                items="{fruits>/Fruits}"
+                items="{
+                    path : 'fruits>/Fruits',
+                    sorter : [
+                        { path : 'ProductName' }
+                    ]
+                }"
             >
+            <headerToolbar>
+                <Toolbar>
+                    <Title text="검색"></Title>
+                    <ToolbarSpacer />
+                    <SearchField 
+                        id="search"
+                        width="50%"
+                        search=".onFilterFruits">
+                    </SearchField>
+                    <ToggleButton 
+                        id="toggle"
+                        text="재고 있는거만 보고싶으면 눌러"
+                        press=".onFilterToggle"                        
+                        >
+                    </ToggleButton>
+                </Toolbar>
+            </headerToolbar>
                 <items>
                     <ObjectListItem 
                         title="{fruits>ProductName} X {fruits>Quantity}"

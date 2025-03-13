@@ -1,0 +1,64 @@
+<mvc:View controllerName="sync.d07.mtrd0701.controller.View"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    >
+    <Page id="page" title="{i18n>title}">
+        <content>
+          <!-- 1. 차트 정의 -->
+            <viz:VizFrame
+                id="idChart"
+                width="100%"
+                height="400px"
+                vizType="column"
+                vizProperties="{ title: {text : '제품별 판매량 비교', visible : true},
+                                plotArea: {
+                                        dataLabel: {
+                                            visible: true
+                                        },
+                                        colorPalette : 'pink'
+                                    },
+                                categoryAxis : {
+                                        title : {
+                                            text : '판매'
+                                        }
+                                },
+                                valueAxis : {
+                                    title : {
+                                        text : '제품'
+                                    }
+                                },
+                                tooltip : {
+                                    background : {
+                                        color : 'skyblue'
+                                    }
+                                }
+
+                    }"
+                >
+
+                <!-- 2. FlattenedDataset - 데이터 바인딩 (JSON 모델) -->
+                <viz:dataset>
+                    <viz.data:FlattenedDataset data="{chart>/ProductSales}">
+                        <viz.data:dimensions>
+                            <viz.data:DimensionDefinition name="Product" value="{chart>Product}"></viz.data:DimensionDefinition>
+                        </viz.data:dimensions>
+                        <viz.data:measures>
+                                <viz.data:MeasureDefinition name="Sales" value="{chart>Sales}"></viz.data:MeasureDefinition>
+                        </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                </viz:dataset>
+
+                <!-- 3. feeds : FeedItem 정의 -->
+                <viz:feeds>
+                    <!-- x축 -->
+                    <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Product"></viz.feeds:FeedItem>
+                    <!-- y축 -->
+                    <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Sales"></viz.feeds:FeedItem>
+                </viz:feeds>
+            </viz:VizFrame>
+        </content>
+    </Page>
+</mvc:View>

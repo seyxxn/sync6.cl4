@@ -3,9 +3,20 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/odata/v2/ODataModel",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
+    "sap/m/MessageBox",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/ui/model/json/JSONModel",
   ],
-  (Controller, ODataModel, MessageToast, MessageBox) => {
+  (
+    Controller,
+    ODataModel,
+    MessageToast,
+    MessageBox,
+    Filter,
+    FilterOperator,
+    JSONModel
+  ) => {
     "use strict";
 
     return Controller.extend("sync.d07.mtrd07test.controller.View", {
@@ -43,7 +54,7 @@ sap.ui.define(
           MessageToast.show("데이터를 모두 입력해주세요.");
           return;
         }
-        
+
         // 기존 키 존재 여부 확인
         oModel.read("/ZT001_D07Set('" + bukrs + "')", {
           success: function (oData) {
@@ -88,91 +99,102 @@ sap.ui.define(
 
         // 선택된 아이템이 없는 경우
         if (sSelect === null) {
-          MessageToast.show("삭제할 항목을 선택해주세요.", {width : "auto"});
+          MessageToast.show("삭제할 항목을 선택해주세요.", { width: "auto" });
           return;
         }
 
-         // 선택된 항목의 경로 찾기
+        // 선택된 항목의 경로 찾기
         var sPath = sSelect.getBindingContext("myModel").getPath();
 
-        oModel.remove(sPath,{
+        oModel.remove(sPath, {
           success: () => {
-              MessageToast.show("데이터가 성공적으로 삭제되었습니다.", {width : "auto"});
-              oTable.removeSelections(); // 선택된 항목 삭제
-              oModel.refresh(true);  // 삭제된 데이터가 반영될 수 있도록 refresh 함수 호출
+            MessageToast.show("데이터가 성공적으로 삭제되었습니다.", {
+              width: "auto",
+            });
+            oTable.removeSelections(); // 선택된 항목 삭제
+            oModel.refresh(true); // 삭제된 데이터가 반영될 수 있도록 refresh 함수 호출
           },
           error: () => {
-              MessageToast.show("데이터 삭제에 실패했습니다.", {width : "auto"});
-          }
-      }); 
+            MessageToast.show("데이터 삭제에 실패했습니다.", { width: "auto" });
+          },
+        });
       },
       // 삭제 창 눌렀을 때 호출될 함수 정의
       onConfirmationDeletePress() {
         // OData 모델 가져오기
         var oModel = this.getView().getModel("myModel");
-                
+
         // 데이터 모델이 적용된 테이블 객체 가져오기
         var oTable = this.getView().byId("mTable");
 
-        // 선택된 아이템 가져오기
-        var sSelect = oTable.getSelectedItem();
-
-      // 선택된 아이템이 없는 경우
-      if (sSelect === null) {
-        MessageToast.show("삭제할 항목을 선택해주세요.", { width: "auto" });
-        return;
-      }
-
-      // 선택된 항목의 경로 찾기
-      var sPath = sSelect.getBindingContext("myModel").getPath();
-      // 선택된 항목의 아이템 객체 가져오기
-      var oData = sSelect.getBindingContext("myModel").getObject();
-              
-      // MessageBox에서 YES를 눌렀을 때만 삭제 수행
-      MessageBox.confirm(
-        "Company Code : " + oData.Bukrs +
-        "\nCompany Name : " + oData.Butxt +
-        "\nCity : " + oData.Ort01 +
-        "\nCountry/Reg. : " + oData.Land1 +
-        "\nCurrency : " + oData.Waers +
-        "\n\n정말 삭제하시겠습니까?",
-        {
-            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-            emphasizedAction: MessageBox.Action.YSE,
-            onClose: (sAction) => { 
-                if (sAction === MessageBox.Action.YES) {
-                    // 사용자가 YES를 누른 경우만 삭제
-                    oModel.remove(sPath, {
-                        success: () => {
-                            MessageToast.show("데이터가 성공적으로 삭제되었습니다.", { width: "auto" });
-                            oTable.removeSelections(); // 선택된 항목 삭제
-                            oModel.refresh(true); // 삭제된 데이터 반영
-                        },
-                        error: () => {
-                            MessageToast.show("데이터 삭제에 실패했습니다.", { width: "auto" });
-                        }
-                    });
-                }else if (sAction === MessageBox.Action.NO) {
-                    MessageToast.show("삭제가 취소되었습니다.", { width: "auto" });
-                    oTable.removeSelections(); // 선택된 항목 삭제
-                }
-            }
-        }
-      );      
-      },
-      async onDialogUpdatePress() {
-        // 데이터 모델이 적용된 테이블 객체 가져오기
-        var oTable = this.getView().byId("mTable");
-                
         // 선택된 아이템 가져오기
         var sSelect = oTable.getSelectedItem();
 
         // 선택된 아이템이 없는 경우
         if (sSelect === null) {
-            MessageToast.show("변경할 항목을 선택해주세요.", { width: "auto" });
-            return;
+          MessageToast.show("삭제할 항목을 선택해주세요.", { width: "auto" });
+          return;
         }
-        
+
+        // 선택된 항목의 경로 찾기
+        var sPath = sSelect.getBindingContext("myModel").getPath();
+        // 선택된 항목의 아이템 객체 가져오기
+        var oData = sSelect.getBindingContext("myModel").getObject();
+
+        // MessageBox에서 YES를 눌렀을 때만 삭제 수행
+        MessageBox.confirm(
+          "Company Code : " +
+            oData.Bukrs +
+            "\nCompany Name : " +
+            oData.Butxt +
+            "\nCity : " +
+            oData.Ort01 +
+            "\nCountry/Reg. : " +
+            oData.Land1 +
+            "\nCurrency : " +
+            oData.Waers +
+            "\n\n정말 삭제하시겠습니까?",
+          {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YSE,
+            onClose: (sAction) => {
+              if (sAction === MessageBox.Action.YES) {
+                // 사용자가 YES를 누른 경우만 삭제
+                oModel.remove(sPath, {
+                  success: () => {
+                    MessageToast.show("데이터가 성공적으로 삭제되었습니다.", {
+                      width: "auto",
+                    });
+                    oTable.removeSelections(); // 선택된 항목 삭제
+                    oModel.refresh(true); // 삭제된 데이터 반영
+                  },
+                  error: () => {
+                    MessageToast.show("데이터 삭제에 실패했습니다.", {
+                      width: "auto",
+                    });
+                  },
+                });
+              } else if (sAction === MessageBox.Action.NO) {
+                MessageToast.show("삭제가 취소되었습니다.", { width: "auto" });
+                oTable.removeSelections(); // 선택된 항목 삭제
+              }
+            },
+          }
+        );
+      },
+      async onDialogUpdatePress() {
+        // 데이터 모델이 적용된 테이블 객체 가져오기
+        var oTable = this.getView().byId("mTable");
+
+        // 선택된 아이템 가져오기
+        var sSelect = oTable.getSelectedItem();
+
+        // 선택된 아이템이 없는 경우
+        if (sSelect === null) {
+          MessageToast.show("변경할 항목을 선택해주세요.", { width: "auto" });
+          return;
+        }
+
         // 선택된 항목의 아이템 객체 가져오기
         var oData = sSelect.getBindingContext("myModel").getObject();
 
@@ -180,7 +202,7 @@ sap.ui.define(
         var oUpdateModel = new sap.ui.model.json.JSONModel(oData); // oData를 이용하여 JSON 모델 생성
 
         this.oDialog ??= await this.loadFragment({
-            name: "sync.d07.mtrd07test.view.UpdateDialog", // 경로 주의 **
+          name: "sync.d07.mtrd07test.view.UpdateDialog", // 경로 주의 **
         });
 
         // 다이얼로그에 모델을 설정함
@@ -190,16 +212,16 @@ sap.ui.define(
 
       onCloseDialog() {
         this.byId("updateDialog").close();
-      },   
-      
-      onUpdate(){
+      },
+
+      onUpdate() {
         // OData 모델 가져오기
         var oModel = this.getView().getModel("myModel");
 
-         // 데이터 모델이 적용된 테이블 객체 가져오기
+        // 데이터 모델이 적용된 테이블 객체 가져오기
         var oTable = this.getView().byId("mTable");
 
-         // 선택된 아이템 가져오기
+        // 선택된 아이템 가져오기
         var sSelect = oTable.getSelectedItem();
 
         // 선택된 항목의 경로 찾기
@@ -214,38 +236,61 @@ sap.ui.define(
         console.log(oUpdatedData);
 
         // 만약 빈 값으로 둔다면 메세지 출력
-        if (oUpdatedData.Bukrs === '' ||
-            oUpdatedData.Butxt === '' ||
-            oUpdatedData.Ort01 === '' ||
-            oUpdatedData.Land1 === '' ||
-            oUpdatedData.Waers === '' )
-        {
-            MessageToast.show("데이터를 모두 입력해주세요.", { width: "auto" });
-            return;
+        if (
+          oUpdatedData.Bukrs === "" ||
+          oUpdatedData.Butxt === "" ||
+          oUpdatedData.Ort01 === "" ||
+          oUpdatedData.Land1 === "" ||
+          oUpdatedData.Waers === ""
+        ) {
+          MessageToast.show("데이터를 모두 입력해주세요.", { width: "auto" });
+          return;
         }
 
         // 기존의 값과 모두 동일하다면 메세지 출력
-        if (oUpdatedData.Bukrs === oData.Bukrs &&
-            oUpdatedData.Butxt === oData.Butxt &&
-            oUpdatedData.Ort01 === oData.Ort01 &&
-            oUpdatedData.Land1 === oData.Land1 &&
-            oUpdatedData.Waers === oData.Waers)
-        {
-            MessageToast.show("변경된 데이터가 없습니다.", { width: "auto" });
-            return;
-        }   
+        if (
+          oUpdatedData.Bukrs === oData.Bukrs &&
+          oUpdatedData.Butxt === oData.Butxt &&
+          oUpdatedData.Ort01 === oData.Ort01 &&
+          oUpdatedData.Land1 === oData.Land1 &&
+          oUpdatedData.Waers === oData.Waers
+        ) {
+          MessageToast.show("변경된 데이터가 없습니다.", { width: "auto" });
+          return;
+        }
 
         oModel.update(sPath, oUpdatedData, {
-            success: () => {
-                MessageToast.show("데이터가 성공적으로 수정되었습니다.", { width: "auto" });
-                oModel.refresh(true); // 삭제된 데이터 반영
-            },
-            error: () => {
-                MessageToast.show("데이터 수정에 실패했습니다.", { width: "auto" });
-            }
+          success: () => {
+            MessageToast.show("데이터가 성공적으로 수정되었습니다.", {
+              width: "auto",
+            });
+            oModel.refresh(true); // 삭제된 데이터 반영
+          },
+          error: () => {
+            MessageToast.show("데이터 수정에 실패했습니다.", { width: "auto" });
+          },
         });
         this.byId("updateDialog").close(); // 다이얼로그 닫기
-    }
+      },
+
+      onSearch(oEvent) {
+        const sQuery = oEvent.getParameter("query");
+        console.log("검색어 입력:", sQuery);
+
+        const aFilter = [];
+        if (sQuery) {
+          aFilter.push(new Filter("Butxt", FilterOperator.Contains, sQuery));
+        }
+
+        const oTable = this.byId("mTable");
+        const oBinding = oTable.getBinding("items");
+
+        if (oBinding) {
+          oBinding.filter(aFilter);
+        } else {
+          console.warn("테이블 바인딩을 찾을 수 없습니다.");
+        }
+      },
     });
   }
 );

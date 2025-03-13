@@ -64,7 +64,7 @@
 
             <Label text="Currency" labelFor="waers" design="Bold" />
             <Input id="waers" placeholder="Enter Currency"/>
-
+            
 			</f:content>
 		</f:SimpleForm>
 	</VBox>
@@ -78,6 +78,11 @@
                 <Toolbar >
                     <Title text="Company List"></Title>
                     <ToolbarSpacer />
+                    <SearchField
+                            id="search"
+							placeholder="Search for Company Name"
+							search=".onSearch"
+							width="20rem"/>
                     <Button
                         text="Update Entry"
                         type="Default"
