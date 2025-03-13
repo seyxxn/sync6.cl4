@@ -277,19 +277,69 @@ sap.ui.define(
         const sQuery = oEvent.getParameter("query");
         console.log("검색어 입력:", sQuery);
 
-        const aFilter = [];
-        if (sQuery) {
-          aFilter.push(new Filter("Butxt", FilterOperator.Contains, sQuery));
+        const oModel = this.getView().getModel("myModel"); // OData 모델 가져오기
+        oModel.read("/ZT001_D07Set", {
+          success: function (oData) {
+            // console.log("OData에서 가져온 데이터:", oData.results);
+
+            // ✅ OData 데이터를 JSON 모델로 변환
+            const oJsonModel = new sap.ui.model.json.JSONModel({
+              TableData: oData.results,
+            });
+
+            // ✅ JSON 모델을 View에 적용
+            this.getView().setModel(oJsonModel, "jsonModel");
+
+            // ✅ 필터링 실행
+            this.applyFilter(sQuery, oJsonModel);
+          }.bind(this),
+          error: function (oError) {
+            console.error("OData 요청 실패:", oError);
+            MessageToast.show("OData 데이터를 불러오는 데 실패했습니다.");
+          },
+        });
+      },
+      applyFilter(sQuery, oJsonModel) {
+        if (!sQuery) {
+          console.warn("검색어가 비어 있으므로 필터링을 수행하지 않습니다.");
+          return;
         }
 
+        const aData = oJsonModel.getProperty("/TableData"); // JSON 모델에서 데이터 가져오기
+        if (!aData) {
+          console.warn("JSONModel에 데이터가 없습니다.");
+          return;
+        }
+
+        // ✅ 필터링 실행 (대소문자 구분 없이 검색 가능하도록)
+        const sQueryLower = sQuery.toLowerCase();
+        const aFilteredData = aData.filter(
+          (item) => item.Butxt && item.Butxt.toLowerCase().includes(sQueryLower)
+        );
+
+        console.log("필터링된 데이터:", aFilteredData);
+
+        if (aFilteredData.length === 0) {
+          MessageToast.show("검색 결과가 없습니다.");
+        }
+
+        // ✅ 필터링된 데이터를 JSONModel로 변환하여 사용 (ODataModel 대신 JSONModel 사용)
+        const oFilteredJsonModel = new sap.ui.model.json.JSONModel({
+          TableData: aFilteredData,
+        });
+
+        // ✅ 테이블에 JSONModel을 적용
         const oTable = this.byId("mTable");
-        const oBinding = oTable.getBinding("items");
+        oTable.setModel(oFilteredJsonModel, "myModel");
 
-        if (oBinding) {
-          oBinding.filter(aFilter);
-        } else {
-          console.warn("테이블 바인딩을 찾을 수 없습니다.");
-        }
+        // ✅ 테이블 바인딩 갱신 (JSONModel을 사용하여 바인딩)
+        oTable.bindAggregation(
+          "items",
+          "myModel>/TableData",
+          oTable.getBindingInfo("items").template
+        );
+
+        console.log("JSONModel을 사용하여 필터링된 데이터 적용 완료.");
       },
     });
   }
