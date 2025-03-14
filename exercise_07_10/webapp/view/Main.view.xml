@@ -5,6 +5,55 @@
         <content>
             <Button text="Detail" press="onGoDetail"></Button>
             <Input id="idInput" width="30%"></Input>
+
+            <Table 
+            id="mTable"
+            items="{student>/student}"
+            alternateRowColors="true"
+            mode="SingleSelectLeft">
+
+            <headerToolbar>
+                <Toolbar >
+                    <Title text="Student List"></Title>
+                </Toolbar>
+            </headerToolbar>
+
+            <columns>
+                <Column>
+                    <header>
+                        <Label text="No."></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Name"></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Gender"></Label>
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="Birthday"></Label>
+                    </header>
+                </Column>
+            </columns>
+            
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{student>no}"></Text>
+                        <Text text="{student>name}"></Text>
+                        <Text text="{student>gender}"></Text>
+                        <Text text="{student>birthdate}"></Text>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+
+
         </content>
     </Page>
 </mvc:View>

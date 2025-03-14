@@ -1,14 +1,28 @@
 <mvc:View controllerName="sync.d07.exercise0710.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
-    <Page 
-        id="pageDetail"
-        title="{i18n>title}"
-        showNavButton="true"
-        navButtonPress="onGoBack"
-        >
+    <Page id="pageDetail" title="{i18n>title}" showNavButton="true" navButtonPress="onGoBack">
         <content>
-            <Text text="Detail Page"></Text>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="Student Information" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                    <f:content>
+                        <Label text="No." />
+                        <Text text = "{detailModel>/no}"></Text>
+
+                        <Label text="Name" />
+                        <Text text = "{detailModel>/name}"></Text>
+
+                        <Label text="Gender" />
+                        <Text text = "{detailModel>/gender}"></Text>
+
+                        <Label text="Birthdate" />
+                        <Text text = "{detailModel>/birthdate}"></Text>
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
         </content>
     </Page>
 </mvc:View>

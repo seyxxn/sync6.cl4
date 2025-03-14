@@ -51,6 +51,10 @@
         "settings": {
           "bundleName": "sync.d07.exercise0710.i18n.i18n"
         }
+      },
+      "student": {
+        "type": "sap.ui.model.json.JSONModel",
+        "uri": "student.json"
       }
     },
     "resources": {
@@ -80,7 +84,7 @@
         },
         {
           "name": "RouteDetail",
-          "pattern": "detail/{key1}/:key2:",
+          "pattern": "detail/{no}/{name}/{gender}/{birthdate}",
           "target": ["TargetDetail"]
         }
       ],
