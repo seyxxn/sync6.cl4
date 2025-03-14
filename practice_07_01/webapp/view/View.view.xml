@@ -23,8 +23,8 @@
                         </Toolbar>
 
                         <Label text="CLASS" labelFor="carrid" design="Bold" />
-                        <Input id="class" required="true" placeholder="Class" />
-                        <Select id="gender" selectedKey="{gender>/Default}" items="{gender>/Gender}" width="auto">
+                        <Input id="classFilter" required="true" placeholder="Class" />
+                        <Select id="genderFilter" selectedKey="{gender>/Default}" items="{gender>/Gender}" width="auto">
                             <items>
                                 <core:Item key="{gender>type}" text="{gender>text}"></core:Item>
                             </items>
