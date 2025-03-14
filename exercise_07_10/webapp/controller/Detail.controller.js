@@ -20,8 +20,7 @@ sap.ui.define(
         // 특정한 파라미터 가져올 때
         // var oArgu = oEvent.getParamter("argument");
 
-        // [ 배열로 하는 방법 ]
-
+        // [ 배열로 넘겨주는 방법 ]
         //1. URL 에서 전달된 파라미터 가져오기.
         // var sId = oEvent.getParameter("arguments").key1; //키 지정
         var oArgu = oEvent.getParameters().arguments; // 배열

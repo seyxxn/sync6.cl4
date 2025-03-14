@@ -36,28 +36,16 @@ sap.ui.define(
         // );
         // 이름은 manifest에서 지정한 라우터 이름 가져오기
         // 매개변수 같이 넘겨주려면 2번째 인자에 명시
-        // ----------------------------------
-        // var oModel = this.getView().getModel("student");
-        // var oTable = this.getView().byId("mTable");
-        // var sSelect = oTable.getSelectedItem();
-        // if (sSelect === null) {
-        //   MessageToast.show("변경할 항목을 선택해주세요.", { width: "auto" });
-        //   return;
-        // }
-        // var oData = sSelect.getBindingContext("student").getObject();
-        // var oSelectedModel = new JSONModel(oData);
-        // console.log(oSelectedModel.getData());
-        // this.oRouter.navTo("RouteDetail", { key: sId }, true);
-        // ---------------------------
 
-        // var oModel = this.getView().getModel("student");
-        var oTable = this.getView().byId("mTable");
-        var sSelect = oTable.getSelectedItem();
+        var oTable = this.getView().byId("mTable"); // 뷰에 존재하는 테이블 가져오기
+        var sSelect = oTable.getSelectedItem(); // 테이블 내에서 선택한 아이템 가져오기
+
         if (sSelect === null) {
           MessageToast.show("변경할 항목을 선택해주세요.", { width: "auto" });
           return;
         }
 
+        // 선택한 아이템을 student 모델에 바인딩하고, 객체 가져오기
         var oData = sSelect.getBindingContext("student").getObject();
         // console.log(oData);
 
