@@ -1,25 +1,25 @@
 # Index
-[exercise_07_05](#exercise_07_05)
+[exercise_07_05 - 뷰에 컨트롤러 정의, JSON Model 활용하여 MVC 디자인, 인풋 필드, 메세지 토스트 띄우기](#exercise_07_05)
 
-[exercise_07_06](#exercise_07_06)
+[exercise_07_06 - json 파일의 정보를 사용하여 테이블 출력](#exercise_07_06)
 
-[exercise_07_07](#exercise_07_07)
+[exercise_07_07 - OData 서비스(`ZCARR_D07Set`)에서 데이터를 가져와 테이블(m.Table)을 구성](#exercise_07_07)
 
-[exercise_07_07_01](#exercise_07_07_01)
+[exercise_07_07_01 - OData 서비스(`ZCARR_D07Set`)에서 데이터를 가져와 테이블(ui.Table)을 구성](#exercise_07_07_01)
 
-[exercise_07_08](#exercise_07_08)
+[exercise_07_08 - JSON 데이터 활용하여 차트 생성하기](#exercise_07_08)
 
-[exercise_07_09](#exercise_07_09)
+[exercise_07_09 - OData 서비스를 이용하여 차트 생성하기](#exercise_07_09)
 
-[exercise_07_10](#exercise_07_10)
+[exercise_07_10 - Routing](#exercise_07_10)
 
-[mtr_d07_00](#mtr_d07_00)
+[mtr_d07_00 - 멘토링 과제](#mtr_d07_00)
 
-[mtr_d07_01](#mtr_d07_01)
+[mtr_d07_01 - 차트 생성 멘토링 과제](#mtr_d07_01)
 
-[mtr_d07_test](#mtr_d07_test)
+[mtr_d07_test - Gateway, OData를 활용한 멘토링 과제](#mtr_d07_test)
 
-[practice_07_01](#practice_07_01)
+[practice_07_01 - 광희쌤 과제](#practice_07_01)
 
 [walkthrough](#walkthrough)
 
@@ -62,7 +62,6 @@ Routing
 ## mtr_d07_00
 멘토링 과제
 ![image](https://github.com/user-attachments/assets/baa3dd1d-d2b3-43eb-8dac-d0c884325a77)
-
 
 ## mtr_d07_01
 차트 생성 멘토링 과제
