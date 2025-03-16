@@ -1,6 +1,71 @@
 <mvc:View controllerName="sync.d07.practice0702.controller.View"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:t="sap.ui.table"
+    xmlns:core="sap.ui.core">
     <Page id="page" title="{i18n>title}">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm id="SimpleFormToolbar" editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" ariaLabelledBy="Title1">
+                    <f:toolbar>
+                        <Toolbar id="TB1">
+                            <Title id="Title1" text="CLASS" />
+                            <ToolbarSpacer />
+                        </Toolbar>
+                    </f:toolbar>
+                    <f:content>
+                        <Toolbar ariaLabelledBy="Title2">
+                            <Title id="Title2" text="조회 조건" />
+                            <ToolbarSpacer />
+                            <Button text="검색" icon="sap-icon://search" />
+                            <Button text="차트" icon="sap-icon://donut-chart"/>
+                        </Toolbar>
+
+                        <Label text="CLASS" labelFor="carrid" design="Bold" />
+                        <Input id="classFilter" required="true" placeholder="Class" />
+                        <Select id="genderFilter" selectedKey="{gender>/Default}" items="{gender>/Gender}" width="auto">
+                            <items>
+                                <core:Item key="{gender>type}" text="{gender>text}"></core:Item>
+                            </items>
+                        </Select>
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+            <t:Table
+                id = "uiTable" rows="{myModel>/ZTEACHER_D07Set}" selectionMode="MultiToggle">
+                <t:columns>
+                    <t:Column id="Name" hAlign="Center">
+                        <Label text="Name" />
+                        <t:template>
+                            <Text text="{myModel>Name}" />
+                        </t:template>
+                    </t:Column>
+
+                    <!-- <t:Column id="Class" hAlign="Center">
+                        <Label text="Class" />
+                        <t:template>
+                            <Text text="{teacher>Class}" />
+                        </t:template>
+                    </t:Column>
+
+                    <t:Column id="Gender" hAlign="Center">
+                        <Label text="Gender" />
+                        <t:template>
+                            <Text text="{teacher>Gender}" />
+                        </t:template>
+                    </t:Column>
+
+                    <t:Column id="Details" hAlign="Center">
+                        <Label text="Details"/>
+                        <t:template>
+                            <Button text="Button" icon="sap-icon://business-card" press=".onConfirmationButtonPress"/>
+                        </t:template>
+                    </t:Column> -->
+
+                </t:columns>
+            </t:Table>
+        </content>
     </Page>
 </mvc:View>
