@@ -19,8 +19,8 @@
                         <Toolbar ariaLabelledBy="Title2">
                             <Title id="Title2" text="조회 조건" />
                             <ToolbarSpacer />
-                            <Button text="검색" icon="sap-icon://search" />
-                            <Button text="차트" icon="sap-icon://donut-chart"/>
+                            <Button text="검색" icon="sap-icon://search" press="onSearch" />
+                            <Button text="차트" icon="sap-icon://donut-chart" press="onDialogChartPress" />
                         </Toolbar>
 
                         <Label text="CLASS" labelFor="carrid" design="Bold" />
@@ -43,17 +43,17 @@
                         </t:template>
                     </t:Column>
 
-                    <!-- <t:Column id="Class" hAlign="Center">
+                    <t:Column id="Class" hAlign="Center">
                         <Label text="Class" />
                         <t:template>
-                            <Text text="{teacher>Class}" />
+                            <Text text="{myModel>Class}" />
                         </t:template>
                     </t:Column>
 
                     <t:Column id="Gender" hAlign="Center">
                         <Label text="Gender" />
                         <t:template>
-                            <Text text="{teacher>Gender}" />
+                            <Text text="{myModel>Gender}" />
                         </t:template>
                     </t:Column>
 
@@ -62,7 +62,7 @@
                         <t:template>
                             <Button text="Button" icon="sap-icon://business-card" press=".onConfirmationButtonPress"/>
                         </t:template>
-                    </t:Column> -->
+                    </t:Column>
 
                 </t:columns>
             </t:Table>
