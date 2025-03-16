@@ -1,7 +1,7 @@
 sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/odata/v2/ODataModel", // oDataModel 사용을 위해
+    "sap/ui/model/odata/v2/ODataModel",
     "sap/ui/model/json/JSONModel", // JSONModel 사용을 위해
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
@@ -10,7 +10,7 @@ sap.ui.define(
   ],
   (
     Controller,
-    oDataModel,
+    ODataModel,
     JSONModel,
     MessageBox,
     Filter,
@@ -22,7 +22,7 @@ sap.ui.define(
     return Controller.extend("sync.d07.practice0702.controller.View", {
       onInit() {
         // oDataModel 생성 및 설정
-        var oModel = new oDataModel("/sap/opu/odata/sap/ZTEACHER_D07_SRV/");
+        var oModel = new ODataModel("/sap/opu/odata/sap/ZTEACHER_D07_SRV/");
         // view에 모델 설정
         this.getView().setModel(oModel, "myModel");
 
@@ -46,6 +46,34 @@ sap.ui.define(
 
         var oGenderModel = new sap.ui.model.json.JSONModel(oData);
         this.getView().setModel(oGenderModel, "gender");
+
+        this.oRouter = this.getOwnerComponent().getRouter(); // 컨트롤러에 유효한 객체
+        // 해당 컴포넌트에서 라우터를 가져오게 된다 !
+        this.oRouter
+          .getRoute("RouteView")
+          .attachPatternMatched(this._onPatternMatched, this);
+      },
+
+      // pattern이 일치할 때 마다 실행되는 이벤트
+      _onPatternMatched(oEvent) {
+        // 초기화, 셋팅, 매개변수 찾기
+        // 특정한 파라미터 가져올 때
+        var oArgu = oEvent.getParameter("arguments");
+
+        // console.log(oArgu);
+
+        if (oArgu) {
+          // console.log(oArgu["?query"]);
+          var oUpdateData = {
+            Name: oArgu["?query"].name,
+            Class: oArgu["?query"].class,
+            Gender: oArgu["?query"].gender,
+          };
+
+          // console.log(oUpdateData);
+
+          this.onUpdate(oUpdateData);
+        }
       },
 
       onConfirmationButtonPress(oEvent) {
@@ -233,7 +261,6 @@ sap.ui.define(
 
         const oTable = this.byId("uiTable");
         const iIndex = oTable.getSelectedIndex();
-        let sMsg;
         if (iIndex < 0) {
           MessageToast.show("삭제할 데이터를 선택해주세요"); // 이건 위에서 처리되어서 나올일 없음
           return;
@@ -283,6 +310,68 @@ sap.ui.define(
             },
           }
         );
+      },
+
+      // 정보 수정 버튼을 누르면 라우팅됨
+      onGoDetail() {
+        // uiTable에서 선택된 행의 인덱스를 가져오기
+        const aIndices = this.byId("uiTable").getSelectedIndices();
+
+        if (aIndices.length < 1) {
+          MessageToast.show("수정할 데이터를 선택해주세요");
+
+          return;
+        } else if (aIndices.length > 1) {
+          MessageToast.show("수정할 1개의 데이터만 선택해주세요");
+          return;
+        }
+
+        const oTable = this.byId("uiTable");
+        const iIndex = oTable.getSelectedIndex();
+
+        // 선택된 항목의 경로
+        var sPath = oTable.getContextByIndex(iIndex).getPath(); // *getPath 해야함
+
+        // 선택된 항목의 아이템 객체 가져오기
+        var oData = oTable.getContextByIndex(iIndex).getObject();
+
+        this.oRouter.navTo(
+          "RouteDetail",
+          {
+            name: oData.Name,
+            class: oData.Class,
+            gender: oData.Gender,
+          },
+          true
+        );
+      },
+
+      onUpdate(oUpdateData) {
+        // console.log(oUpdateData);
+
+        // OData 모델 가져오기
+        var oModel = this.getView().getModel("myModel");
+
+        // UTF-8 인코딩 적용해야 함 ..
+        // console.log(oUpdateData.getProperty(Name));
+        var sEncodedName = encodeURIComponent(oUpdateData.Name);
+        // console.log(sEncodedName);
+        var sPath = "/ZTEACHER_D07Set('" + sEncodedName + "')"; // OData 경로 설정
+
+        // console.log(sPath);
+
+        oModel.update(sPath, oUpdateData, {
+          success: () => {
+            MessageToast.show("데이터가 성공적으로 수정되었습니다.", {
+              width: "auto",
+            });
+            oModel.refresh(true); // 삭제된 데이터 반영
+            this.oRouter.navTo("RouteView", {}, true);
+          },
+          error: () => {
+            MessageToast.show("데이터 수정에 실패했습니다.", { width: "auto" });
+          },
+        });
       },
     });
   }

@@ -70,7 +70,7 @@
                             text="정보 수정"
                             type="Default"
                             icon="sap-icon://edit"
-                            press=".onDialogUpdatePress"
+                            press=".onGoDetail"
                         />
                         <Button
                             text="데이터 삭제"

@@ -94,12 +94,22 @@
           "name": "RouteView",
           "pattern": ":?query:",
           "target": ["TargetView"]
+        },
+        {
+          "name": "RouteDetail",
+          "pattern": "detail/:name:/:class:/:gender:",
+          "target": ["TargetDetail"]
         }
       ],
       "targets": {
         "TargetView": {
           "id": "View",
           "name": "View"
+        },
+        "TargetDetail": {
+          "viewType": "XML",
+          "viewId": "Detail",
+          "viewName": "Detail"
         }
       }
     },

@@ -1,0 +1,49 @@
+<mvc:View controllerName="sync.d07.practice0702.controller.Detail"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    >
+    <Page id = "pageDatail" title="{i18n>title}" showNavButton="true" navButtonPress="onGoBack">
+           <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="Student Information" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                    <f:content>
+                    <Toolbar >
+                        <Title text="정보 수정하기"></Title>
+                        <ToolbarSpacer ></ToolbarSpacer>
+                        <Button
+                        text="수정하기"
+                        type="Default"
+                        icon="sap-icon://edit"
+                        press=".onUpdate"
+                        />
+                    </Toolbar>
+                        <Label text="Name" design="Bold"/>
+                        <Text text = "{detailModel>/name}"></Text>
+
+                        <Label text="Class" labelFor="classUpdate" design="Bold" />
+                        <Select id="classUpdate" width="auto" selectedKey="{detailModel>/class}">
+                            <core:Item text="CL1" id="classUpdate1" key="CL1"/>
+                            <core:Item text="CL2" id="classUpdate2" key="CL2"/>
+                            <core:Item text="CL3" id="classUpdate3" key="CL3"/>
+                            <core:Item text="CL4" id="classUpdate4" key="CL4"/>
+                            <core:Item text="CL5" id="classUpdate5" key="CL5"/>
+                            <core:Item text="CL6" id="classUpdate6" key="CL6"/>
+                        </Select>
+
+                        <Label text="Gender" labelFor="genderUpdate" design="Bold" />
+                        <Select id="genderUpdate" width="auto" selectedKey="{detailModel>/gender}">
+                            <core:Item text="남성" id="maleUpdate" key="남성"></core:Item>
+                            <core:Item text="여성" id="femaleUpdate" key="여성"></core:Item>
+                        </Select>
+
+
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
