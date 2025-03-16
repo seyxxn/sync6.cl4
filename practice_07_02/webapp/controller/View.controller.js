@@ -6,8 +6,17 @@ sap.ui.define(
     "sap/m/MessageBox",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/m/MessageToast",
   ],
-  (Controller, oDataModel, JSONModel, MessageBox, Filter, FilterOperator) => {
+  (
+    Controller,
+    oDataModel,
+    JSONModel,
+    MessageBox,
+    Filter,
+    FilterOperator,
+    MessageToast
+  ) => {
     "use strict";
 
     return Controller.extend("sync.d07.practice0702.controller.View", {
@@ -166,6 +175,114 @@ sap.ui.define(
         oBinding.filter(aFilters);
 
         // console.log(sClass, sGender);
+      },
+
+      onCreate() {
+        // OData 모델 가져오기
+        var oModel = this.getView().getModel("myModel");
+        var that = this; // 콜백 내부에서 컨트롤러의 this가 변경될 수 있기 때문에 that 변수 현재 컨트롤러 객체를 저장 (sync.d07.mtrd07test.controller.View)
+
+        var oEntry = {
+          Name: this.getView().byId("name").getValue(),
+          Class: this.getView().byId("classSelect").getSelectedKey(),
+          Gender: this.getView().byId("genderSelect").getSelectedKey(),
+        };
+
+        // console.log(oEntry);
+
+        // 필수 입력 값 검증하기
+        if (oEntry.Name === "" || oEntry.Class === "" || oEntry.Gender === "") {
+          MessageToast.show("데이터를 모두 입력해주세요.");
+          return;
+        }
+
+        // 새로운 레코드 추가
+        oModel.create("/ZTEACHER_D07Set", oEntry, {
+          success: () => {
+            MessageToast.show("데이터가 성공적으로 생성되었습니다.");
+            oModel.refresh(true);
+            // 입력된 데이터가 다시 조회되도록 refresh 함수 호출
+
+            // 새로운 값 입력 후, 인풋 필드를 비워줌
+            that.getView().byId("name").setValue("");
+            that.getView().byId("classSelect").setSelectedKey("CL1"); // select 태그 초기값으로 돌리기
+            that.getView().byId("genderSelect").setSelectedKey("남성");
+          },
+          error: () => {
+            MessageToast.show("데이터생성 오류");
+          },
+        });
+      },
+
+      // 삭제 창 눌렀을 때 메세지 박스를 띄우는 함수 호출
+      onConfirmationDeletePress() {
+        var oModel = this.getView().getModel("myModel");
+
+        // uiTable에서 선택된 행의 인덱스를 가져오기
+        const aIndices = this.byId("uiTable").getSelectedIndices();
+
+        if (aIndices.length < 1) {
+          MessageToast.show("삭제할 데이터를 선택해주세요");
+
+          return;
+        } else if (aIndices.length > 1) {
+          MessageToast.show("삭제할 1개의 데이터만 선택해주세요");
+
+          return;
+        }
+
+        const oTable = this.byId("uiTable");
+        const iIndex = oTable.getSelectedIndex();
+        let sMsg;
+        if (iIndex < 0) {
+          MessageToast.show("삭제할 데이터를 선택해주세요"); // 이건 위에서 처리되어서 나올일 없음
+          return;
+        }
+
+        // 선택된 항목의 경로
+        var sPath = oTable.getContextByIndex(iIndex).getPath(); // *getPath 해야함
+        // console.log("sPath : " + sPath);
+
+        // 선택된 항목의 아이템 객체 가져오기
+        var oData = oTable.getContextByIndex(iIndex).getObject();
+        // console.log("oData : " + oData.Name);
+
+        // MessageBox에서 YES를 눌렀을 때만 삭제를 수행하기
+        MessageBox.confirm(
+          "Name : " +
+            oData.Name +
+            "\nClass : " +
+            oData.Class +
+            "\nGender : " +
+            oData.Gender +
+            "\n\n정말 삭제하시겠습니까?",
+          {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YES,
+            onClose: (sAction) => {
+              if (sAction === MessageBox.Action.YES) {
+                // 사용자가 YES를 누른 경우만 삭제
+                oModel.remove(sPath, {
+                  success: () => {
+                    MessageToast.show("데이터가 성공적으로 삭제되었습니다.", {
+                      width: "auto",
+                    });
+                    oTable.clearSelection(); // 선택된 항목을 해제
+                    oModel.refresh(true); // 삭제된 데이터 반영
+                  },
+                  error: () => {
+                    MessageToast.show("데이터 삭제에 실패했습니다.", {
+                      width: "auto",
+                    });
+                  },
+                });
+              } else if (sAction === MessageBox.Action.NO) {
+                MessageToast.show("삭제가 취소되었습니다.", { width: "auto" });
+                oTable.clearSelection(); // 선택된 항목을 해제
+              }
+            },
+          }
+        );
       },
     });
   }

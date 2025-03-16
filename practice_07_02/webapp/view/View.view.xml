@@ -30,11 +30,56 @@
                                 <core:Item key="{gender>type}" text="{gender>text}"></core:Item>
                             </items>
                         </Select>
+
+                        <Toolbar ariaLabelledBy="Title3">
+                            <Title id="Title3" text="데이터 추가" />
+                            <ToolbarSpacer />
+                            <Button text="생성" icon="sap-icon://create" type="Emphasized" press="onCreate" />
+                        </Toolbar>
+
+                        <Label text="Name" labelFor="name" design="Bold"/>
+                        <Input id="name" required="true" placeholder="Enter Name"/>
+
+                        <Label text="Class" labelFor="classSelect" design="Bold" />
+                        <!-- <Input id="class" placeholder="Enter Class"/> -->
+                        <Select id="classSelect" width="auto">
+                            <core:Item text="CL1" id="class1" key="CL1"></core:Item>
+                            <core:Item text="CL2" id="class2" key="CL2"></core:Item>
+                            <core:Item text="CL3" id="class3" key="CL3"></core:Item>
+                            <core:Item text="CL4" id="class4" key="CL4"></core:Item>
+                            <core:Item text="CL5" id="class5" key="CL5"></core:Item>
+                            <core:Item text="CL6" id="class6" key="CL6"></core:Item>
+                        </Select>
+
+                        <Label text="Gender" labelFor="genderSelect" design="Bold" />
+                        <!-- <Input id="gender" placeholder="Enter Gender"/> -->
+                        <Select id="genderSelect" width="auto">
+                            <core:Item text="남성" id="male" key="남성"></core:Item>
+                            <core:Item text="여성" id="female" key="여성"></core:Item>
+                        </Select>
                     </f:content>
                 </f:SimpleForm>
             </VBox>
             <t:Table
-                id = "uiTable" rows="{myModel>/ZTEACHER_D07Set}" selectionMode="MultiToggle">
+                id = "uiTable" rows="{myModel>/ZTEACHER_D07Set}" selectionMode="MultiToggle" visibleRowCount="25">
+                <t:extension>
+                    <Toolbar >
+                        <Title text="Teacher List"></Title>
+                        <ToolbarSpacer ></ToolbarSpacer>
+                        <Button
+                            text="정보 수정"
+                            type="Default"
+                            icon="sap-icon://edit"
+                            press=".onDialogUpdatePress"
+                        />
+                        <Button
+                            text="데이터 삭제"
+                            type="Reject"
+                            icon="sap-icon://delete"
+                            press=".onConfirmationDeletePress"
+                        />
+                    </Toolbar>
+                </t:extension>
                 <t:columns>
                     <t:Column id="Name" hAlign="Center">
                         <Label text="Name" />
