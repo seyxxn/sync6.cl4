@@ -1,0 +1,57 @@
+<mvc:View controllerName="cl4.exprogramd07.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{i18n>title}">
+        <VBox class="sapUiSmallMargin">
+            <f:SimpleForm id="SimpleFormToolbar">
+                <Table id="mTable" items="{member>/MemberSet}" mode="SingleSelectMaster" visible="true" selectionChange=".onGoDetail" alternateRowColors="true">
+                    <headerToolbar>
+                        <Toolbar>
+                            <ToolbarSpacer />
+                            <Button text="회원 등록" type="Neutral" icon="sap-icon://employee-pane" press=".onCreatePress" />
+                        </Toolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column>
+                            <header>
+                                <Label text="회원번호"></Label>
+                            </header>
+                        </Column>
+                        <Column>
+                            <header>
+                                <Label text="이름"></Label>
+                            </header>
+                        </Column>
+                        <Column>
+                            <header>
+                                <Label text="생년월일"></Label>
+                            </header>
+                        </Column>
+                        <Column>
+                            <header>
+                                <Label text="이메일"></Label>
+                            </header>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem core:require="{Formatter: 'cl4/exprogramd07/model/formatter'}" type="Navigation">
+                            <cells>
+                                <Text text="{member>Id}" />
+                                <Text text="{member>Name}" />
+                                <Text text="{
+                                path: 'member>Bdate',
+                                formatter : 'Formatter.formatDate'}" />
+                                <Text text="{member>Email}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+
+                </Table>
+            </f:SimpleForm>
+        </VBox>
+
+    </Page>
+</mvc:View>

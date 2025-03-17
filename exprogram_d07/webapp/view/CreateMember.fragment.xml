@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog id="createDialog" title="회원 정보 등록">
+        <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="4" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="1" columnsM="1" singleContainerFullSize="false" ariaLabelledBy="Title1">
+            <f:content>
+                <Label text="회원이름" labelFor="name_dialog" required="true"/>
+                <Input id="name_dialog" value="{createMember>/name}" width="50%"/>
+
+                <Label text="생년월일" labelFor="bdate_dialog" required="true"/>
+                <DatePicker id="bdate_dialog" placeholder="YYYY-MM-DD" displayFormat="yyyy-MM-dd" valueFormat="yyyy-MM-dd" value="{createMember>/bdate}" width="50%"></DatePicker>
+
+                <Label text="성별" labelFor="gender_dialog" required="true"/>
+                <Input id="gender_dialog" value="{createMember>/gender}" placeholder="남/여" width="70%"/>
+
+                <Label text="도시" labelFor="city_dialog" required="true"/>
+                <Input id="city_dialog" value="{createMember>/city}" width="50%"/>
+
+                <Label text="국가코드" labelFor="country_dialog" required="true"/>
+                <Input id="country_dialog" value="{createMember>/country}" placeholder="KR" width="30%"/>
+
+                <Label text="전화번호" labelFor="tel_dialog" required="true"/>
+                <Input id="tel_dialog" value="{createMember>/telephone}" width="70%"/>
+
+                <Label text="E-Mail" labelFor="email_dialog" required="true"/>
+                <Input id="email_dialog" value="{createMember>/email}" width="80%"/>
+            </f:content>
+        </f:SimpleForm>
+
+        <beginButton>
+            <Button text="저장" type="Emphasized" press=".onCreate"/>
+        </beginButton>
+        <endButton>
+            <Button text="취소" type="Reject" press=".onCloseDialog"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

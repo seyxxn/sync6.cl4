@@ -1,0 +1,46 @@
+<mvc:View controllerName="cl4.exprogramd07.controller.Detail" displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page id="pageDetail" title="{i18n>detailTitle}" showNavButton="true" navButtonPress="onGoBack">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <f:SimpleForm editable="true" core:require="{Formatter: 'cl4/exprogramd07/model/formatter'}" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="true" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1">
+                    <f:content>
+                        <Label text="회원번호 " />
+                        <Text text = "{detailModel>/Id}"></Text>
+
+                        <Label text="회원이름 " />
+                        <Text text = "{detailModel>/Name}"></Text>
+
+                        <Label text="생년월일 " />
+                        <Text text = "{
+                                path: 'detailModel>/Bdate',
+                                formatter : 'Formatter.formatDate'}"></Text>
+                        <Label text="성별 " />
+                        <Text text = "{detailModel>/Gender}"></Text>
+
+                        <Label text="도시 " />
+                        <Text text = "{detailModel>/City}"></Text>
+
+                        <Label text="국가코드 " />
+                        <Text text = "{detailModel>/Country}"></Text>
+
+                        <Label text="전화번호 " />
+                        <Text text = "{detailModel>/Telephone}"></Text>
+
+                        <Label text="E-Mail " />
+                        <Text text = "{detailModel>/Email}"></Text>
+
+                        <Label text="E-Mail " visible="false"/>
+                    </f:content>
+                    <Toolbar >
+                        <Button text="메인으로" press="onGoBack" icon="sap-icon://home" type="Ghost"></Button>
+                    </Toolbar>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
