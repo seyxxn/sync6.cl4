@@ -23,6 +23,8 @@
 
 [walkthrough](#walkthrough)
 
+[exprogram_d07 - UX 시험](#exprogram_d07)
+
 
 
 ## exercise_07_05
@@ -81,3 +83,11 @@ Gateway, OData를 활용한 멘토링 과제
 ## walkthrough
 ![image](https://github.com/user-attachments/assets/a1b9974d-b9f0-4a27-abd1-75097891a29c)
 ![image](https://github.com/user-attachments/assets/5a8ba02d-d09d-41f9-8439-fad512b41b78)
+
+
+## exprogram_d07
+![d07_01](https://github.com/user-attachments/assets/9b95885e-14a2-4e24-b7ec-afd5d83b5b04)
+![d07_02](https://github.com/user-attachments/assets/867d6dbe-142a-4099-ae0c-2b0446bdc0c1)
+![d07_03](https://github.com/user-attachments/assets/42245f97-3686-4720-9adf-74c1359ba8c3)
+![d07_04](https://github.com/user-attachments/assets/111e81ae-6662-4cd4-8772-9d8c7415926e)
+
