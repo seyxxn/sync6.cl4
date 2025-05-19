@@ -1,8 +1,8 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:core="sap.ui.core">
-    <Dialog id="infoDialog" title="구매요청 수기 생성 방법" draggable="true" resizable="true" contentWidth="550px">
+    <Dialog id="infoDialog" title="구매요청 생성 방법" draggable="true" resizable="true" contentWidth="550px">
         <VBox class="sapUiSmallMargin">
-            <Text text="이 화면은 구매요청을 수기로 등록하는 화면입니다.&#10;&#10;" wrapping="true"></Text>
+            <Text text="이 화면은 구매요청을 등록하는 화면입니다.&#10;&#10;" wrapping="true"></Text>
             <Text text="여러 건의 구매요청을 한 번에 등록할 수 있으며,"></Text>
             <Text text="각 항목마다 개별적인 구매요청 ID가 자동으로 생성됩니다."></Text>
             <Toolbar height="10px"/>
