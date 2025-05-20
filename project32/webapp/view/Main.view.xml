@@ -1,0 +1,100 @@
+<mvc:View controllerName="sync.dc.pp.project32.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Page id="page" title="{i18n>title}" showHeader="false" class="sapUiContentPadding">
+        <Panel expandable="false" width="auto" class="sapUiResponsiveMargin sapUiTinyMarginTopBottom customPanelShadow">
+            <VBox class="sapUiSmallMargin">
+                <Text text="생산 흐름 조회" class="sapUiSmallMarginBottom panelTitle"></Text>
+
+                <Text text="고객주문 기준으로 생산계획, 생산오더, 출고 상태까지 통합 조회할 수 있는 화면입니다." class="sapUiSmallMarginBottom"/>
+                <Text text="해당 주문에 대해 생산운영계획이 수립되었는지, 계획주문/생산오더가 생성되었는지, 납품이 완료되었는지를 단계별로 확인할 수 있습니다." class="sapUiSmallMarginBottom"/>
+
+                <HBox>
+                    <Button text="자세히 보기" type="Default" icon="sap-icon://inspect" press="onReadMore"/>
+                </HBox>
+            </VBox>
+        </Panel>
+
+        <HBox class="sapUiResponsiveMargin" justifyContent="Center">
+            <GenericTile class="tileBackgroundHyundai sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="현대 중공업" subheader="5000000000" frameType= "TwoByOne">
+                <TileContent>
+                </TileContent>
+            </GenericTile>
+            <GenericTile class="tileBackgroundToyota sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="TOYOTA" subheader="6000000000" frameType= "TwoByOne">
+                <TileContent />
+            </GenericTile>
+        </HBox>
+
+        <HBox class="sapUiResponsiveMargin" justifyContent="Center">
+            <GenericTile class="tileBackgroundCOLI sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="COLI" subheader="7000000000" frameType= "TwoByOne">
+                <TileContent />
+            </GenericTile>
+            <GenericTile class="tileBackgroundCOMAC sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="COMAC" subheader="7000000001" frameType= "TwoByOne">
+                <TileContent />
+            </GenericTile>
+        </HBox>
+
+        <Table id="table" items="{/ZDCC_MATFLOW}">
+            <columns>
+                <Column>
+                    <header>
+                        <Label text="고객 ID" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="고객명" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="판매주문 문서 번호" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="자재번호" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="자재명" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="계획 주문 ID" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="생산오더ID" />
+                    </header>
+                </Column>
+                <Column>
+                    <header>
+                        <Label text="납품 문서번호" />
+                    </header>
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem >
+                    <cells>
+                        <Text text="{cust_id}"></Text>
+                        <Text text="{cust_name}"></Text>
+                        <Text text="{so_docu_id}"></Text>
+                        <Text text="{mat_id}"></Text>
+                        <Text text="{mat_nm}"></Text>
+                        <Text text="{op_id}"></Text>
+                        <Text text="{plan_id}"></Text>
+                        <Text text="{pro_id}"></Text>
+                        <Text text="{deli_docu_id}"></Text>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Page>
+</mvc:View>
