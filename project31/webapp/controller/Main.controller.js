@@ -10,6 +10,9 @@ sap.ui.define(
 
     return Controller.extend("sync.dc.mm.project31.controller.Main", {
       onInit() {
+        // 다크모드 적용
+        // sap.ui.getCore().applyTheme("sap_fiori_3_dark");
+
         // OData 모델 생성 및 설정
         // var oModel = new ODataModel("/sap/opu/odata/sap/ZDCMM_GW_001_SRV/");
         var oModel = new ODataModel("/sap/opu/odata/sap/ZDCMM_GW_001_SRV/", {
