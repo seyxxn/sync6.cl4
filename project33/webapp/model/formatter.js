@@ -16,5 +16,14 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function (DateFormat) {
       return oDateFormat.format(new Date(sDate));
       // format 메서드를 사용하여 날짜를 변환
     },
+
+    getOrderIcon: function (deliveryCompleted) {
+      return deliveryCompleted
+        ? "sap-icon://status-completed"
+        : "sap-icon://status-in-process";
+    },
+    getOrderHighlight: function (deliveryCompleted) {
+      return deliveryCompleted ? "Success" : "Information";
+    },
   };
 });

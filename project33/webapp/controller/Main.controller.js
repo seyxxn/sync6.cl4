@@ -17,7 +17,7 @@ sap.ui.define(
       },
 
       onTilePress: function (oEvent) {
-        // 예시: 타일의 subheader를 customerId로 사용
+        // 타일의 subheader를 customerId로 사용
         var sCustomerId = oEvent.getSource().getSubheader();
 
         console.log("Customer ID:", sCustomerId);
@@ -29,8 +29,6 @@ sap.ui.define(
           },
           true
         );
-
-        // MessageToast.show("Title Pressed");
       },
     });
   }

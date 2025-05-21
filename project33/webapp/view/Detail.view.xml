@@ -8,21 +8,35 @@
         <SplitApp id="splitApp">
             <masterPages>
                 <Page id="masterPage" title="판매주문 목록" showHeader="true" showNavButton="true" navButtonPress="onGoBack">
+                    <subHeader>
+                        <Bar>
+                            <contentMiddle>
+                                <SearchField width="100%" placeholder="판매주문 문서번호 검색" liveChange="onOrderSearch"/>
+                            </contentMiddle>
+                        </Bar>
+                    </subHeader>
                     <List id="orderList" items="{uniqueOrders>/items}" core:require="{Formatter: 'sync/dc/pp/project33/model/formatter'}" mode="SingleSelectMaster" selectionChange="onOrderSelect">
                         <items>
                             <StandardListItem title="{uniqueOrders>so_docu_id}" description="{
                                 path: 'uniqueOrders>req_deli_date',
                                 formatter: 'Formatter.formatDate'
-                                }" />
+                                }" icon="{= ${uniqueOrders>deliveryCompleted} ? 'sap-icon://status-completed' : 'sap-icon://status-in-process'
+                                    }" iconInset="false" highlight="{= ${uniqueOrders>deliveryCompleted} ? 'Success' : 'Warning'}" 
+                                    info = "{= ${uniqueOrders>deliveryCompleted} ? '출고 완료' : '미출고'}" infoState = "{= ${uniqueOrders>deliveryCompleted} ? 'Success' : 'Warning'}"/>
                         </items>
                     </List>
                 </Page>
             </masterPages>
             <detailPages>
                 <Page id="detailPage" title="{view>/customerName}" showHeader="true">
-                    <commons:ProcessFlow id="processflow2" scrollable="false" nodes="{pf2>/nodes}" lanes="{pf2>/lanes}" headerPress="onHeaderPress">
+                    <HBox renderType="Bare" justifyContent="End">
+                        <Button text="확대" press="onZoomIn" icon="sap-icon://zoom-in"/>
+                        <Button text="축소" press="onZoomOut" icon="sap-icon://zoom-out"/>
+                    </HBox>
+
+                    <commons:ProcessFlow id="processflow2" nodePress="onNodePress" foldedCorners="true" wheelZoomable="true" scrollable="false" nodes="{pf2>/nodes}" lanes="{pf2>/lanes}" headerPress="onHeaderPress">
                         <commons:nodes>
-                            <commons:ProcessFlowNode laneId="{pf2>lane}" nodeId="{pf2>id}" title="{pf2>title}" children="{pf2>children}" state="{pf2>state}" stateText="{pf2>stateText}" texts="{pf2>texts}" focused="{pf2>focused}" />
+                            <commons:ProcessFlowNode laneId="{pf2>lane}" nodeId="{pf2>id}" title="{pf2>title}" children="{pf2>children}" state="{pf2>state}" stateText="{pf2>stateText}" texts="{pf2>texts}" focused="{pf2>focused}"/>
                         </commons:nodes>
                         <commons:lanes>
                             <commons:ProcessFlowLaneHeader laneId="{pf2>id}" iconSrc="{pf2>icon}" text="{pf2>label}" position="{pf2>position}" state="{pf2>state}" />

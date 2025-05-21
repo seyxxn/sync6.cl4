@@ -4,14 +4,18 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/core/routing/History",
+    "sap/ui/core/Fragment",
   ],
-  (Controller, Filter, FilterOperator, History) => {
+  (Controller, Filter, FilterOperator, History, Fragment) => {
     "use strict";
 
     return Controller.extend("sync.dc.pp.project33.controller.Detail", {
       onInit() {
         this.oViewModel = new sap.ui.model.json.JSONModel({ customerName: "" });
         this.getView().setModel(this.oViewModel, "view");
+
+        // ProcessFlow 컨트롤 인스턴스 저장
+        this.oProcessFlow = this.byId("processflow2");
 
         this.oRouter = this.getOwnerComponent().getRouter();
         this.oRouter
@@ -27,7 +31,7 @@ sap.ui.define(
               state: "Positive",
               stateText: "접수완료",
               children: ["2"],
-              texts: ["SO_DOCU_ID 기준"],
+              texts: ["고객이 요청한 제품 주문 접수 현황"],
               focused: true,
             },
             {
@@ -37,7 +41,7 @@ sap.ui.define(
               state: "Planned",
               stateText: "미수립",
               children: ["3"],
-              texts: ["OP 데이터 없음"],
+              texts: ["고객 주문을 기반으로 한 생산 일정 계획"],
             },
             {
               id: "3",
@@ -46,7 +50,7 @@ sap.ui.define(
               state: "Planned",
               stateText: "미생성",
               children: ["4"],
-              texts: ["OP_STATUS = 0"],
+              texts: ["수립된 계획에 따른 내부 계획 주문 생성"],
             },
             {
               id: "4",
@@ -55,15 +59,15 @@ sap.ui.define(
               state: "Planned",
               stateText: "미생성",
               children: ["5"],
-              texts: ["PO_STATUS 없음"],
+              texts: ["작업 지시가 내려진 실질적인 생산 오더"],
             },
             {
               id: "5",
               lane: "4",
-              title: "출고 상태",
+              title: "납품",
               state: "Planned",
               stateText: "출고 전",
-              texts: ["납품문서 없음"],
+              texts: ["생산 완료 후 고객에게 납품되는 단계"],
             },
           ],
           lanes: [
@@ -72,38 +76,64 @@ sap.ui.define(
               icon: "sap-icon://sales-order",
               label: "고객주문",
               position: 0,
-              state: { text: "Positive" },
+              state: [
+                {
+                  state: "Positive",
+                  value: 100,
+                },
+              ],
             },
             {
               id: "1",
-              icon: "sap-icon://factory",
+              icon: "sap-icon://activity-items",
               label: "생산계획",
               position: 1,
-              state: { text: "Planned" },
+              state: [
+                {
+                  state: "Planned",
+                  value: 100,
+                },
+              ],
             },
             {
               id: "2",
               icon: "sap-icon://create-form",
               label: "계획주문",
               position: 2,
-              state: { text: "Planned" },
+              state: [
+                {
+                  state: "Planned",
+                  value: 100,
+                },
+              ],
             },
             {
               id: "3",
-              icon: "sap-icon://shipping-status",
+              icon: "sap-icon://factory",
               label: "생산오더",
               position: 3,
-              state: { text: "Planned" },
+              state: [
+                {
+                  state: "Planned",
+                  value: 100,
+                },
+              ],
             },
             {
               id: "4",
               icon: "sap-icon://outbox",
               label: "출고상태",
               position: 4,
-              state: { text: "Planned" },
+              state: [
+                {
+                  state: "Planned",
+                  value: 100,
+                },
+              ],
             },
           ],
         });
+
         this.getView().setModel(oPf2Model, "pf2");
       },
 
@@ -142,8 +172,19 @@ sap.ui.define(
               var oReqDate = new Date(item.req_deli_date);
               oReqDate.setHours(0, 0, 0, 0);
 
+              // if (!oSeen[item.so_docu_id]) {
+              //   oSeen[item.so_docu_id] = true;
+              //   aUnique.push(item);
+              // }
+
               if (!oSeen[item.so_docu_id]) {
                 oSeen[item.so_docu_id] = true;
+
+                // 출고 완료 여부 계산
+                var isCompleted = item.deli_status === "2";
+                // 새로운 필드 추가
+                item.deliveryCompleted = isCompleted;
+
                 aUnique.push(item);
               }
             });
@@ -167,6 +208,28 @@ sap.ui.define(
         });
       },
 
+      onOrderSearch: function (oEvent) {
+        var sQuery =
+          oEvent.getParameter("query") || oEvent.getParameter("newValue") || "";
+        var oList = this.byId("orderList");
+        var oBinding = oList.getBinding("items");
+
+        if (sQuery) {
+          var aFilters = [
+            new sap.ui.model.Filter(
+              "so_docu_id",
+              sap.ui.model.FilterOperator.Contains,
+              sQuery
+            ),
+          ];
+          oBinding.filter(
+            new sap.ui.model.Filter({ filters: aFilters, and: false })
+          );
+        } else {
+          oBinding.filter([]);
+        }
+      },
+
       onOrderSelect: function (oEvent) {
         var oSelected = oEvent
           .getParameter("listItem")
@@ -181,6 +244,7 @@ sap.ui.define(
           filters: [new Filter("so_docu_id", FilterOperator.EQ, sSoDocuId)],
           success: function (oData) {
             var aResults = oData.results;
+
             var oStatusMap = {
               sop: false,
               op_status: "0",
@@ -188,60 +252,187 @@ sap.ui.define(
               delivery_status: "0",
             };
 
+            var aPoStatus = []; // 생산오더 상태 배열
+
+            // aResults  출력
+            console.log("aResults:", aResults);
+
             aResults.forEach(function (item) {
-              if (item.op_id) oStatusMap.sop = true;
-              if (item.op_status === "1") oStatusMap.op_status = "1";
-              if (item.po_status > oStatusMap.po_status)
-                oStatusMap.po_status = item.po_status;
-              if (item.status === "2") oStatusMap.delivery_status = "2";
+              if (item.op_id) {
+                oStatusMap.sop = true;
+              }
+
+              if (item.op_status === "1") {
+                oStatusMap.op_status = "1";
+              }
+
+              aPoStatus.push(item.po_status); // 생산오더 상태 배열에 추가
+
+              // 생산오더 상태 판별
+              if (aPoStatus.includes("1")) {
+                oStatusMap.po_status = "1";
+              } else if (aPoStatus.includes("2")) {
+                oStatusMap.po_status = "2";
+              } else if (
+                aPoStatus.length > 0 &&
+                aPoStatus.every(function (s) {
+                  return s === "3";
+                })
+              ) {
+                oStatusMap.po_status = "3";
+              } else {
+                oStatusMap.po_status = "0";
+              }
+
+              // if (item.po_status === "3") {
+              //   oStatusMap.po_status = "3";
+              // } else if (
+              //   item.po_status === "2" &&
+              //   oStatusMap.po_status !== "3"
+              // ) {
+              //   oStatusMap.po_status = "2";
+              // } else if (
+              //   item.po_status === "1" &&
+              //   oStatusMap.po_status === "0"
+              // ) {
+              //   oStatusMap.po_status = "1";
+              // }
+
+              // 납품 상태 갱신
+              if (item.deli_status === "2") {
+                oStatusMap.delivery_status = "2";
+              } else if (
+                item.deli_status === "1" &&
+                oStatusMap.delivery_status === "0"
+              ) {
+                oStatusMap.delivery_status = "1";
+              }
             });
 
-            // pf2 모델을 복사해서 상태 업데이트
+            // pf2 모델 복사 및 상태 갱신
             var oPf2Model = that.getView().getModel("pf2");
-            var aNodes = oPf2Model.getProperty("/nodes");
+            var oClonedData = JSON.parse(JSON.stringify(oPf2Model.getData()));
 
-            aNodes.forEach(function (node) {
+            oClonedData.nodes.forEach(function (node) {
               switch (node.id) {
                 case "2": // 생산운영계획
-                  node.state = oStatusMap.sop ? "Positive" : "Planned";
-                  node.stateText = oStatusMap.sop ? "계획수립됨" : "미수립";
+                  if (oStatusMap.sop) {
+                    node.state = "Positive";
+                    node.stateText = "계획수립";
+                    node.focused = true;
+                  } else {
+                    node.state = "Planned";
+                    node.stateText = "미수립";
+                    node.focused = false;
+                  }
                   break;
                 case "3": // 계획주문
-                  node.state =
-                    oStatusMap.op_status === "1" ? "Positive" : "Planned";
-                  node.stateText =
-                    oStatusMap.op_status === "1" ? "생성됨" : "미생성";
+                  if (oStatusMap.op_status === "1") {
+                    node.state = "Positive";
+                    node.stateText = "생성";
+                    node.focused = true;
+                  } else {
+                    node.state = "Planned";
+                    node.stateText = "미생성";
+                    node.focused = false;
+                  }
                   break;
                 case "4": // 생산오더
                   if (oStatusMap.po_status === "3") {
                     node.state = "Positive";
                     node.stateText = "생산완료";
+                    node.focused = true;
                   } else if (oStatusMap.po_status === "2") {
                     node.state = "Critical";
-                    node.stateText = "출고 완료";
+                    node.stateText = "생산전";
+                    node.focused = true;
                   } else if (oStatusMap.po_status === "1") {
                     node.state = "Negative";
-                    node.stateText = "출고 전";
+                    node.stateText = "원자재 출고 전";
+                    node.focused = true;
                   } else {
                     node.state = "Planned";
-                    node.stateText = "미생성";
+                    node.focused = false;
                   }
                   break;
-                case "5": // 납품 상태
-                  node.state =
-                    oStatusMap.delivery_status === "2" ? "Positive" : "Planned";
-                  node.stateText =
-                    oStatusMap.delivery_status === "2"
-                      ? "출고 완료"
-                      : "출고 전";
+                case "5": // 납품
+                  if (oStatusMap.delivery_status === "2") {
+                    node.state = "Positive";
+                    node.stateText = "출고 완료";
+                    node.focused = true;
+                  } else if (oStatusMap.delivery_status === "1") {
+                    node.state = "Negative";
+                    node.stateText = "출고 전";
+                    node.focused = true;
+                  } else {
+                    node.state = "Planned";
+                    node.stateText = "출고 문서 없음";
+                    node.focused = false;
+                  }
                   break;
               }
             });
 
-            oPf2Model.setProperty("/nodes", aNodes); // 추가
-            oPf2Model.refresh(true);
+            oClonedData.lanes.forEach(function (lane) {
+              switch (lane.id) {
+                case "1": // 생산계획
+                  if (oStatusMap.sop) {
+                    lane.state = {
+                      state: "Positive",
+                      value: 100,
+                    };
+                  } else {
+                    lane.state = {
+                      state: "Planned",
+                      value: 100,
+                    };
+                  }
+                  break;
 
-            // 테이블 데이터도 같이 갱신
+                case "2": // 계획주문
+                  if (oStatusMap.op_status === "1") {
+                    lane.state = {
+                      state: "Positive",
+                      value: 100,
+                    };
+                  } else {
+                    lane.state = {
+                      state: "Planned",
+                      value: 100,
+                    };
+                  }
+                  break;
+                case "3": // 생산오더
+                  if (oStatusMap.po_status === "3") {
+                    lane.state = { state: "Positive", value: 100 };
+                  } else if (oStatusMap.po_status === "2") {
+                    lane.state = { state: "Critical", value: 100 };
+                  } else if (oStatusMap.po_status === "1") {
+                    lane.state = { state: "Negative", value: 100 };
+                  } else {
+                    lane.state = { state: "Planned", value: 100 };
+                  }
+                  break;
+                case "4": // 납품
+                  if (oStatusMap.delivery_status === "2") {
+                    lane.state = { state: "Positive", value: 100 };
+                  } else if (oStatusMap.delivery_status === "1") {
+                    lane.state = { state: "Negative", value: 100 };
+                  } else {
+                    lane.state = { state: "Planned", value: 100 };
+                  }
+                  break;
+              }
+            });
+
+            // UI 강제 반영
+            oPf2Model.setData(oClonedData);
+
+            if (that.oProcessFlow) {
+              that.oProcessFlow.rerender();
+            }
+
+            // 테이블 데이터 갱신
             var oTableModel = new sap.ui.model.json.JSONModel({
               items: aResults,
             });
@@ -249,6 +440,7 @@ sap.ui.define(
           },
         });
       },
+
       onGoBack() {
         console.log("onGoBack");
 
@@ -259,6 +451,59 @@ sap.ui.define(
           window.history.go(-1); // 브라우저 히스토리 뒤로가기
         } else {
           this.oRouter.navTo("RouteMain", {}, true); // 없으면 메인으로
+        }
+      },
+
+      onZoomIn: function () {
+        this.oProcessFlow.zoomIn();
+
+        MessageToast.show(
+          "Zoom level changed to: " + this.oProcessFlow.getZoomLevel()
+        );
+      },
+
+      onZoomOut: function () {
+        this.oProcessFlow.zoomOut();
+
+        MessageToast.show(
+          "Zoom level changed to: " + this.oProcessFlow.getZoomLevel()
+        );
+      },
+
+      onNodePress: function (oEvent) {
+        var oNode = oEvent.getParameters();
+        var sPath = oNode.getBindingContext("pf2").getPath() + "/quickView";
+
+        var oNodeData = oNode.getBindingContext("pf2").getObject();
+
+        // 클릭한 노드의 상태가 Focused가 아닐 경우
+        if (!oNodeData.focused) {
+          // 클릭 무시
+          return;
+        }
+
+        if (!this.oQuickView) {
+          Fragment.load({
+            name: "sync.dc.pp.project33.view.QuickView", // 실제 QuickView Fragment의 경로로 변경
+            type: "XML",
+          }).then(
+            function (oFragment) {
+              this.oQuickView = oFragment;
+              this.getView().addDependent(this.oQuickView);
+
+              this.oQuickView.bindElement(sPath);
+              this.oQuickView.openBy(oNode);
+            }.bind(this)
+          );
+        } else {
+          this.oQuickView.bindElement(sPath);
+          this.oQuickView.openBy(oNode);
+        }
+      },
+
+      onExit: function () {
+        if (this.oQuickView) {
+          this.oQuickView.destroy();
         }
       },
     });
