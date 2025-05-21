@@ -1,10 +1,6 @@
 sap.ui.define(
-  [
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/odata/v2/ODataModel",
-    "sap/m/MessageToast",
-  ],
-  (Controller, ODataModel, MessageToast) => {
+  ["sap/ui/core/mvc/Controller", "sap/ui/model/odata/v2/ODataModel"],
+  (Controller, ODataModel) => {
     "use strict";
 
     return Controller.extend("sync.dc.pp.project33.controller.Main", {
@@ -29,6 +25,24 @@ sap.ui.define(
           },
           true
         );
+      },
+
+      // 설명 다이얼로그창 open
+      onOpenInfoDialog: function (oEvent) {
+        if (!this._oInfoDialog) {
+          this._oInfoDialog = sap.ui.xmlfragment(
+            "sync.dc.pp.project33.view.InfoDialog",
+            this
+          );
+          this.getView().addDependent(this._oInfoDialog);
+        }
+        this._oInfoDialog.open();
+      },
+
+      onCloseInfoDialog: function () {
+        if (this._oInfoDialog) {
+          this._oInfoDialog.close();
+        }
       },
     });
   }

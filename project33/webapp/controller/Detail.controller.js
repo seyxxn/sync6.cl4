@@ -138,6 +138,136 @@ sap.ui.define(
       },
 
       _onPatternMatched: function (oEvent) {
+        // SearchField 값 초기화
+        var oSearchField = this.byId("orderSearchField");
+        if (oSearchField) {
+          oSearchField.setValue("");
+        }
+
+        // pf2 모델 초기화 (onInit과 동일)
+        var oPf2Model = this.getView().getModel("pf2");
+        if (oPf2Model) {
+          oPf2Model.setData({
+            nodes: [
+              {
+                id: "1",
+                lane: "0",
+                title: "고객주문",
+                state: "Positive",
+                stateText: "접수완료",
+                children: ["2"],
+                texts: ["고객이 요청한 제품 주문 접수 현황"],
+                focused: true,
+              },
+              {
+                id: "2",
+                lane: "1",
+                title: "생산운영계획",
+                state: "Planned",
+                stateText: "미수립",
+                children: ["3"],
+                texts: ["고객 주문을 기반으로 한 생산 일정 계획"],
+              },
+              {
+                id: "3",
+                lane: "2",
+                title: "계획주문",
+                state: "Planned",
+                stateText: "미생성",
+                children: ["4"],
+                texts: ["수립된 계획에 따른 내부 계획 주문 생성"],
+              },
+              {
+                id: "4",
+                lane: "3",
+                title: "생산오더",
+                state: "Planned",
+                stateText: "미생성",
+                children: ["5"],
+                texts: ["작업 지시가 내려진 실질적인 생산 오더"],
+              },
+              {
+                id: "5",
+                lane: "4",
+                title: "납품",
+                state: "Planned",
+                stateText: "출고 전",
+                texts: ["생산 완료 후 고객에게 납품되는 단계"],
+              },
+            ],
+            lanes: [
+              {
+                id: "0",
+                icon: "sap-icon://sales-order",
+                label: "고객주문",
+                position: 0,
+                state: [
+                  {
+                    state: "Positive",
+                    value: 100,
+                  },
+                ],
+              },
+              {
+                id: "1",
+                icon: "sap-icon://activity-items",
+                label: "생산계획",
+                position: 1,
+                state: [
+                  {
+                    state: "Planned",
+                    value: 100,
+                  },
+                ],
+              },
+              {
+                id: "2",
+                icon: "sap-icon://create-form",
+                label: "계획주문",
+                position: 2,
+                state: [
+                  {
+                    state: "Planned",
+                    value: 100,
+                  },
+                ],
+              },
+              {
+                id: "3",
+                icon: "sap-icon://factory",
+                label: "생산오더",
+                position: 3,
+                state: [
+                  {
+                    state: "Planned",
+                    value: 100,
+                  },
+                ],
+              },
+              {
+                id: "4",
+                icon: "sap-icon://outbox",
+                label: "출고상태",
+                position: 4,
+                state: [
+                  {
+                    state: "Planned",
+                    value: 100,
+                  },
+                ],
+              },
+            ],
+          });
+        }
+
+        // 선택된 주문, 테이블 초기화
+        this.getView().setModel(
+          new sap.ui.model.json.JSONModel({ items: [] }),
+          "selectedOrder"
+        );
+        this.getView().getModel("view").setProperty("/customerName", "");
+
+        // URL에서 customerId를 가져옴
         var sCustId = oEvent.getParameter("arguments").customerId;
         this._filterByCustId(sCustId);
       },

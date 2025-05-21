@@ -11,7 +11,7 @@
                     <subHeader>
                         <Bar>
                             <contentMiddle>
-                                <SearchField width="100%" placeholder="판매주문 문서번호 검색" liveChange="onOrderSearch"/>
+                                <SearchField id="orderSearchField" width="100%" placeholder="판매주문 문서번호 검색" liveChange="onOrderSearch"/>
                             </contentMiddle>
                         </Bar>
                     </subHeader>
