@@ -28,8 +28,10 @@ sap.ui.define(
               id: "1",
               lane: "0",
               title: "고객주문",
-              state: "Positive",
-              stateText: "접수완료",
+              // state: "Positive",
+              // stateText: "접수완료",
+              state: "Planned",
+              stateText: "미수립",
               children: ["2"],
               texts: ["고객이 요청한 제품 주문 접수 현황"],
               focused: true,
@@ -78,7 +80,9 @@ sap.ui.define(
               position: 0,
               state: [
                 {
-                  state: "Positive",
+                  // state: "Positive",
+                  // value: 100,
+                  state: "Planned",
                   value: 100,
                 },
               ],
@@ -297,6 +301,17 @@ sap.ui.define(
             var oToday = new Date();
             oToday.setHours(0, 0, 0, 0);
 
+            // 날짜형식 변환하는 함수
+            function formatDateToYMD(date) {
+              if (!date) return "";
+              var d = new Date(date);
+              if (isNaN(d.getTime())) return "";
+              var year = d.getFullYear();
+              var month = String(d.getMonth() + 1).padStart(2, "0");
+              var day = String(d.getDate()).padStart(2, "0");
+              return year + "년 " + month + "월 " + day + "일";
+            }
+
             aResults.forEach(function (item) {
               // req_deli_date가 오늘 이후인지 체크
               var oReqDate = new Date(item.req_deli_date);
@@ -317,6 +332,34 @@ sap.ui.define(
 
                 aUnique.push(item);
               }
+
+              // 추가 //
+              // so_created_time 변환 추가
+              if (
+                item.so_created_time &&
+                typeof item.so_created_time.ms === "number"
+              ) {
+                var ms = item.so_created_time.ms;
+                var hours = Math.floor(ms / (1000 * 60 * 60));
+                var minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((ms % (1000 * 60)) / 1000);
+                var ampm = hours < 12 ? "오전" : "오후";
+
+                item.so_created_time_str =
+                  ampm +
+                  " " +
+                  String(hours).padStart(2, "0") +
+                  ":" +
+                  String(minutes).padStart(2, "0") +
+                  ":" +
+                  String(seconds).padStart(2, "0");
+              } else {
+                item.so_created_time_str = "";
+              }
+
+              // 날짜 포맷 추가
+              item.req_deli_date_str = formatDateToYMD(item.req_deli_date);
+              item.so_created_date_str = formatDateToYMD(item.so_created_date);
             });
 
             // req_deli_date가 가까운 순으로 오름차순 정렬
@@ -361,6 +404,13 @@ sap.ui.define(
       },
 
       onOrderSelect: function (oEvent) {
+        // 추가
+        var oListItem = oEvent.getParameter("listItem");
+        // uniqueOrders 모델의 해당 아이템 바인딩 컨텍스트 저장
+        this._selectedOrderContext =
+          oListItem.getBindingContext("uniqueOrders");
+        // ---------
+
         var oSelected = oEvent
           .getParameter("listItem")
           .getBindingContext("uniqueOrders")
@@ -413,20 +463,6 @@ sap.ui.define(
               } else {
                 oStatusMap.po_status = "0";
               }
-
-              // if (item.po_status === "3") {
-              //   oStatusMap.po_status = "3";
-              // } else if (
-              //   item.po_status === "2" &&
-              //   oStatusMap.po_status !== "3"
-              // ) {
-              //   oStatusMap.po_status = "2";
-              // } else if (
-              //   item.po_status === "1" &&
-              //   oStatusMap.po_status === "0"
-              // ) {
-              //   oStatusMap.po_status = "1";
-              // }
 
               // 납품 상태 갱신
               if (item.deli_status === "2") {
@@ -602,31 +638,62 @@ sap.ui.define(
 
       onNodePress: function (oEvent) {
         var oNode = oEvent.getParameters();
-        var sPath = oNode.getBindingContext("pf2").getPath() + "/quickView";
-
         var oNodeData = oNode.getBindingContext("pf2").getObject();
 
-        // 클릭한 노드의 상태가 Focused가 아닐 경우
+        // 클릭한 노드의 상태가 Focused가 아닐 경우 클릭 무시하기
         if (!oNodeData.focused) {
-          // 클릭 무시
           return;
         }
 
-        if (!this.oQuickView) {
+        // uniqueOrders에서 선택된 아이템의 컨텍스트 사용
+        var oBindingContext = this._selectedOrderContext;
+        if (!oBindingContext) {
+          return;
+        }
+
+        var sNodeId = oNodeData.id; // 노드 id로 분기
+        var sFragmentName;
+
+        switch (sNodeId) {
+          case "1": // 고객주문
+            sFragmentName = "sync.dc.pp.project33.view.QuickViewCustomerOrder";
+            break;
+          case "2": // 생산계획
+            sFragmentName = "sync.dc.pp.project33.view.QuickViewProductionPlan";
+            break;
+          case "3": // 계획주문
+            sFragmentName = "sync.dc.pp.project33.view.QuickViewPlanOrder";
+            break;
+          case "4": // 생산오더
+            sFragmentName =
+              "sync.dc.pp.project33.view.QuickViewProductionOrder";
+            break;
+          case "5": // 납품
+            sFragmentName = "sync.dc.pp.project33.view.QuickViewDelivery";
+            break;
+        }
+
+        if (
+          !this.oQuickView ||
+          this.oQuickView.sFragmentName !== sFragmentName
+        ) {
           Fragment.load({
-            name: "sync.dc.pp.project33.view.QuickView", // 실제 QuickView Fragment의 경로로 변경
+            name: sFragmentName,
             type: "XML",
           }).then(
             function (oFragment) {
               this.oQuickView = oFragment;
+              this.oQuickView.sFragmentName = sFragmentName;
               this.getView().addDependent(this.oQuickView);
-
-              this.oQuickView.bindElement(sPath);
+              this.oQuickView.setBindingContext(
+                oBindingContext,
+                "uniqueOrders"
+              );
               this.oQuickView.openBy(oNode);
             }.bind(this)
           );
         } else {
-          this.oQuickView.bindElement(sPath);
+          this.oQuickView.setBindingContext(oBindingContext, "uniqueOrders");
           this.oQuickView.openBy(oNode);
         }
       },

@@ -1059,6 +1059,160 @@
         "env": {
             "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
         }
+    },
+    {
+        "name": "Start project32",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project32",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--open",
+            "test/flpSandbox.html#syncdcppproject32-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "DEBUG": "--inspect",
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start project32 Local",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project32",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-local.yaml",
+            "--open",
+            "test/flpSandbox.html#syncdcppproject32-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start project32 Mock",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project32",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-mock.yaml",
+            "--open",
+            "test/flpSandbox.html#syncdcppproject32-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start project33",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project33",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--open",
+            "test/flpSandbox.html#syncdcppproject33-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "DEBUG": "--inspect",
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start project33 Local",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project33",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-local.yaml",
+            "--open",
+            "test/flpSandbox.html#syncdcppproject33-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
+    },
+    {
+        "name": "Start project33 Mock",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/project33",
+        "runtimeExecutable": "npx",
+        "windows": {
+            "runtimeExecutable": "npx.cmd"
+        },
+        "runtimeArgs": [
+            "fiori",
+            "run"
+        ],
+        "args": [
+            "--config",
+            "./ui5-mock.yaml",
+            "--open",
+            "test/flpSandbox.html#syncdcppproject33-display"
+        ],
+        "console": "internalConsole",
+        "internalConsoleOptions": "openOnSessionStart",
+        "outputCapture": "std",
+        "env": {
+            "FIORI_TOOLS_URL_PARAMS": "sap-client=200&sap-ui-xx-viewCache=false"
+        }
     }
   ]
 }

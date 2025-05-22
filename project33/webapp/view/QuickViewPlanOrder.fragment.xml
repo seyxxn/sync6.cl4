@@ -1,0 +1,7 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:formatter="sync.dc.pp.project33.model.formatter">
+    <QuickView id="quickView">
+
+    </QuickView>
+</core:FragmentDefinition>

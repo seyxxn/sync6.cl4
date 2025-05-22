@@ -43,7 +43,7 @@
                         </commons:lanes>
                     </commons:ProcessFlow>
 
-                    <Table id="table" items="{selectedOrder>/items}" showNoData="false">
+                    <Table id="table" items="{selectedOrder>/items}" showNoData="false" alternateRowColors="true">
                         <columns>
                             <Column>
                                 <header>
