@@ -12,42 +12,6 @@
   border-radius: 20px;
 }
 
-.tileBackgroundHyundai {
-  background-image: url("../image/hyundai.jpg");
-  background-size: cover;
-  background-position: center; /* 중앙 정렬 */
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-}
-
-.tileBackgroundToyota {
-  background-image: url("../image/toyota.jpg");
-  background-size: cover;
-  background-position: center; /* 중앙 정렬 */
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-}
-
-.tileBackgroundCOLI {
-  background-image: url("../image/coli.jpg");
-  background-size: cover;
-  background-position: center; /* 중앙 정렬 */
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-}
-
-.tileBackgroundCOMAC {
-  background-image: url("../image/comac.png");
-  background-size: cover;
-  background-position: center; /* 중앙 정렬 */
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 100%;
-}
-
 .infoTitle {
   font-weight: 600;
   font-size: 1.1rem;

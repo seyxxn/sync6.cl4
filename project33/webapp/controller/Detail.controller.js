@@ -705,6 +705,24 @@ sap.ui.define(
           this.oQuickView.destroy();
         }
       },
+
+      // 설명 다이얼로그창 open
+      onOpenInfoDialog: function (oEvent) {
+        if (!this._oInfoDialog) {
+          this._oInfoDialog = sap.ui.xmlfragment(
+            "sync.dc.pp.project33.view.InfoDialog",
+            this
+          );
+          this.getView().addDependent(this._oInfoDialog);
+        }
+        this._oInfoDialog.open();
+      },
+
+      onCloseInfoDialog: function () {
+        if (this._oInfoDialog) {
+          this._oInfoDialog.close();
+        }
+      },
     });
   }
 );

@@ -28,7 +28,17 @@
                 </Page>
             </masterPages>
             <detailPages>
-                <Page id="detailPage" title="{view>/customerName}" showHeader="true">
+                <Page id="detailPage" title="{view>/customerName}" showHeader="false">
+                    <subHeader>
+                        <Bar>
+                            <contentLeft>
+                                <Text text="{view>/customerName}"></Text>
+                            </contentLeft>
+                            <contentRight>
+                                <Button text="설명" type="Ghost" icon="sap-icon://inspect" press="onOpenInfoDialog"/>
+                            </contentRight>
+                        </Bar>
+                    </subHeader>
                     <HBox renderType="Bare" justifyContent="End">
                         <Button text="확대" press="onZoomIn" icon="sap-icon://zoom-in"/>
                         <Button text="축소" press="onZoomOut" icon="sap-icon://zoom-out"/>
