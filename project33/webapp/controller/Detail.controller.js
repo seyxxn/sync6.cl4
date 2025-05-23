@@ -360,6 +360,7 @@ sap.ui.define(
               // 날짜 포맷 추가
               item.req_deli_date_str = formatDateToYMD(item.req_deli_date);
               item.so_created_date_str = formatDateToYMD(item.so_created_date);
+              item.deli_date_str = formatDateToYMD(item.deli_date);
             });
 
             // req_deli_date가 가까운 순으로 오름차순 정렬
@@ -667,16 +668,6 @@ sap.ui.define(
         switch (sNodeId) {
           case "1": // 고객주문
             sFragmentName = "sync.dc.pp.project33.view.QuickViewCustomerOrder";
-            break;
-          case "2": // 생산계획
-            sFragmentName = "sync.dc.pp.project33.view.QuickViewProductionPlan";
-            break;
-          case "3": // 계획주문
-            sFragmentName = "sync.dc.pp.project33.view.QuickViewPlanOrder";
-            break;
-          case "4": // 생산오더
-            sFragmentName =
-              "sync.dc.pp.project33.view.QuickViewProductionOrder";
             break;
           case "5": // 납품
             sFragmentName = "sync.dc.pp.project33.view.QuickViewDelivery";

@@ -3,11 +3,11 @@
     xmlns:formatter="sync.dc.pp.project33.model.formatter">
     <!-- <QuickView id="quickViewDelivery"> -->
     <QuickView>
-        <QuickViewPage pageId="delivery" header="납품 상세" title="{uniqueOrders>so_docu_id}" description="{uniqueOrders>cust_name}">
-            <QuickViewGroup heading="납품 정보">
-                <QuickViewGroupElement label="납품번호" value="{uniqueOrders>del_docu_id}" />
+        <QuickViewPage pageId="delivery" header="납품 상세 정보">
+            <QuickViewGroup>
+                <QuickViewGroupElement label="납품 번호" value="{uniqueOrders>deli_docu_id}" />
+                <QuickViewGroupElement label="납품 일자" value="{uniqueOrders>deli_date_str}" />
             </QuickViewGroup>
         </QuickViewPage>
-
     </QuickView>
 </core:FragmentDefinition>
