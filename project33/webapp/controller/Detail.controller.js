@@ -437,6 +437,16 @@ sap.ui.define(
             // aResults  출력
             // console.log("aResults:", aResults);
 
+            // === 여기서 중복 제거 ===
+            var seenMat = {};
+            var uniqueItems = [];
+            aResults.forEach(function (item) {
+              if (!seenMat[item.mat_id]) {
+                seenMat[item.mat_id] = true;
+                uniqueItems.push(item);
+              }
+            });
+
             aResults.forEach(function (item) {
               if (item.op_id) {
                 oStatusMap.sop = true;
@@ -598,9 +608,9 @@ sap.ui.define(
               that.oProcessFlow.rerender();
             }
 
-            // 테이블 데이터 갱신
+            // 테이블 데이터 갱신 (중복 제거된 데이터로)
             var oTableModel = new sap.ui.model.json.JSONModel({
-              items: aResults,
+              items: uniqueItems,
             });
             that.getView().setModel(oTableModel, "selectedOrder");
           },
