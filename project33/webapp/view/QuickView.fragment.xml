@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:formatter="sync.dc.pp.project33.model.formatter">
-    <QuickView id="quickView">
+    <QuickView>
         <QuickViewPage pageId="customerOrder" header="고객주문 상세" title="{uniqueOrders>so_docu_id}" description="{uniqueOrders>cust_name}">
             <QuickViewGroup heading="고객주문 정보">
                 <QuickViewGroupElement label="계약서 번호" value="{uniqueOrders>cont_docu_id}" />

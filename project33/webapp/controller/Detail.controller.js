@@ -435,7 +435,7 @@ sap.ui.define(
             var aPoStatus = []; // 생산오더 상태 배열
 
             // aResults  출력
-            console.log("aResults:", aResults);
+            // console.log("aResults:", aResults);
 
             aResults.forEach(function (item) {
               if (item.op_id) {
@@ -678,6 +678,7 @@ sap.ui.define(
           this.oQuickView.sFragmentName !== sFragmentName
         ) {
           Fragment.load({
+            id: this.getView().getId(),
             name: sFragmentName,
             type: "XML",
           }).then(

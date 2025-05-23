@@ -16,20 +16,18 @@
         </Panel>
 
         <HBox class="sapUiResponsiveMargin" justifyContent="Center">
-            <GenericTile press="onTilePress" class="tileBackgroundHyundai sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="현대 중공업" subheader="5000000000" frameType= "TwoByOne">
-                <TileContent>
-                </TileContent>
+            <GenericTile press="onTilePress" class="tileBackgroundHyundai sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/hyundai.jpg" header="현대 중공업" subheader="5000000000" frameType= "TwoByOne">
             </GenericTile>
-            <GenericTile press="onTilePress" class="tileBackgroundToyota sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="TOYOTA" subheader="6000000000" frameType= "TwoByOne">
+            <GenericTile press="onTilePress" class="tileBackgroundToyota sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/toyota.jpg" header="TOYOTA" subheader="6000000000" frameType= "TwoByOne">
                 <TileContent />
             </GenericTile>
         </HBox>
 
         <HBox class="sapUiResponsiveMargin" justifyContent="Center">
-            <GenericTile press="onTilePress" class="tileBackgroundCOLI sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="COLI" subheader="7000000000" frameType= "TwoByOne">
+            <GenericTile press="onTilePress" class="tileBackgroundCOLI sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/coli.jpg" header="COLI" subheader="7000000000" frameType= "TwoByOne">
                 <TileContent />
             </GenericTile>
-            <GenericTile press="onTilePress" class="tileBackgroundCOMAC sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="COMAC" subheader="7000000001" frameType= "TwoByOne">
+            <GenericTile press="onTilePress" class="tileBackgroundCOMAC sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/comac.png" header="COMAC" subheader="7000000001" frameType= "TwoByOne">
                 <TileContent />
             </GenericTile>
         </HBox>
