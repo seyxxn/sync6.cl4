@@ -21,7 +21,7 @@
         </HBox>
 
         <HBox class="sapUiResponsiveMargin" justifyContent="Center">
-            <GenericTile press="onTilePress" class="tileBackgroundCOLI sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/coli.png" header="COLI" subheader="7000000000" frameType= "TwoByOne">
+            <GenericTile press="onTilePress" class="mySubheaderColor tileBackgroundCOLI sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/coli.png" header="COLI" subheader="7000000000" frameType= "TwoByOne">
                 <TileContent />
             </GenericTile>
             <GenericTile press="onTilePress" class="tileBackgroundCOMAC sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" backgroundImage="../image/comac.png" header="COMAC" subheader="7000000001" frameType= "TwoByOne">

@@ -35,7 +35,7 @@
                                 <Text text="{view>/customerName}"></Text>
                             </contentLeft>
                             <contentRight>
-                                <Button text="설명" type="Ghost" icon="sap-icon://inspect" press="onOpenInfoDialog"/>
+                                <Button text="설명 보기" icon="sap-icon://question-mark" press="onOpenInfoDialog" class="sapUiContentPadding" type="Transparent"/>
                             </contentRight>
                         </Bar>
                     </subHeader>
