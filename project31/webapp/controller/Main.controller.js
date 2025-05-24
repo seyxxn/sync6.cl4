@@ -192,6 +192,12 @@ sap.ui.define(
           return;
         }
 
+        // 수량 1000 이하로만 구매 가능
+        if (parseFloat(sQty) > 1000) {
+          MessageBox.error("구매 가능 수량은 최대 1,000입니다.");
+          return;
+        }
+
         // 자재유형, 구매요청유형, 단위 체크를 위해 자재유형 조회
         // matHelpModel에서 선택한 자재의 MatTy, BaseUnit 가져오기 + 자재명 가져오기
         var oMatHelpModel = oView.getModel("matHelpModel");
@@ -255,6 +261,15 @@ sap.ui.define(
 
         if (oReqDate <= oToday) {
           MessageBox.error("납기요청일은 오늘 이후여야 합니다.");
+          return;
+        }
+
+        // 1년(365일) 초과 불가 체크 추가
+        var diffDays = (oReqDate - oToday) / (1000 * 60 * 60 * 24);
+        if (diffDays > 365) {
+          MessageBox.error(
+            "납기요청일은 오늘로부터 1년(365일) 이내여야 합니다."
+          );
           return;
         }
 
